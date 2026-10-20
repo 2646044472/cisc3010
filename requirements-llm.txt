@@ -1,0 +1,4 @@
+# The simulator and HTTP services require only Python's standard library.
+# These dependencies enable real, local CPU inference.
+torch==2.14.1
+transformers==5.19.0

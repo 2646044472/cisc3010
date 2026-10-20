@@ -1,0 +1,19 @@
+.research/
+.venv/
+__pycache__/
+*.py[cod]
+runs/
+.runtime/
+# Local artifacts and presentation outputs
+output/
+papers/
+*.pptx
+*.ppt
+*.pdf
+# Experiment outputs (regenerate with scripts)
+docs/llm-results/
+docs/sample-results/
+# Local credentials
+.env
+.env.*
+!.env.example
