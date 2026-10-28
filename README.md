@@ -1,44 +1,40 @@
-# TokenFlow: Distributed LLM Serving and Load Balancing
+<sub>CISC3010 · TOPIC 14 · CHEONG KIN NGAI (BANKEY)</sub>
 
-**CISC3010 individual project, Topic 14** · CHEONG KIN NGAI (Bankey)
+# TokenFlow
 
-TokenFlow is a small inference service with one gateway and a configurable pool of independent workers. It serves a real Qwen2.5-0.5B-Instruct model on CPU, streams generated tokens, and exposes queues, routing choices and worker execution. The central question is: **how do routing and worker scheduling affect throughput and response time when short and long requests share a service?**
+**A hands-on look at how LLM requests are routed, queued and served.**
 
-The default demo uses two worker processes on one computer, each with a full model copy. This shared-host deployment illustrates independent processes and partial worker failure. Cross-host fault tolerance and production-scale capacity have not been established.
+TokenFlow runs a real Qwen2.5-0.5B-Instruct model behind a gateway and a configurable pool of worker processes. It streams answers, exposes request queues and records each request's journey. The project asks: **how do routing and scheduling affect response time when short and long requests share a service?**
 
-## Start here
+**[Read the report](report/TokenFlow_Final_Report.pdf)** · **[Watch the 3:30 demo](demo/TokenFlow_Demo.mp4)** · **[Run it locally](#run-the-demo)** · **[Explore the evidence](evidence/README.md)**
 
-| For the reviewer | Where to look |
-| --- | --- |
-| Report: architecture, evidence and limitations | [Final report (PDF)](report/TokenFlow_Final_Report.pdf) · [editable source](report/TokenFlow_Final_Report.md) |
-| Working product demonstration | [3:30 recording](demo/TokenFlow_Demo.mp4) · [captions](demo/TokenFlow_Demo.srt) |
-| Setup, request lifecycle and controls | [Full service guide](docs/LLM_README.md) |
-| Raw data, experiments and figure regeneration | [Evidence guide](evidence/README.md) |
-| Tests and verification | [Correctness and tests](#correctness-and-tests) |
-| Source attribution and AI use | [AI_USE.md](AI_USE.md) · [paper-to-code notes](docs/LLM_PAPER_NOTES.md) |
+![TokenFlow request path: a client sends requests to a gateway, which selects one of two independent Qwen workers. Tokens return through the gateway. Both workers share one CPU host.](docs/assets/tokenflow-architecture.svg)
 
-The recording shows actual local inference at its recorded speed. It demonstrates chat, routing, admission, model execution, cancellation and recovery. The performance comparisons below use separate controlled experiments.
+| Deployment | Inference | Routing study | Verification |
+| --- | --- | --- | --- |
+| 2 independent workers | Qwen 0.5B on CPU | 24 real-model trials | 32 automated tests passed |
+| Full model replica per worker | Streaming token responses | 2,880 mixed requests | Rechecked 28 October 2026 |
 
-## Architecture
+The default demo uses two worker processes on one computer. Each holds a full model copy. This shared-host deployment illustrates independent processes and partial worker failure; cross-host fault tolerance and production-scale capacity have not been established.
 
-```text
-Chat / workload generator
-           |
-           v    HTTP requests + streamed token events
-       Gateway process
-  admission | routing | health | tracing
-           |
-     +-----+-----+
-     v           v
-  Worker 1    Worker 2       independent processes, same host
-  FIFO queue  FIFO queue
-  scheduler   scheduler
-  Qwen copy   Qwen copy      request-local KV state
-     \           /
-      +-- logs --+------> independent checker, metrics and figures
-```
+## How it works
 
-The gateway selects a healthy worker using round robin or least outstanding requests. Within a worker, continuous admission fills freed slots at iteration boundaries. Selective batching combines suitable operations across active requests while keeping Attention and KV state request-local. These are three distinct decisions. The simulator has its own documented timing model; simulation results are labeled separately from real-model measurements.
+**The gateway routes.** Round robin takes turns; least outstanding chooses a healthy worker with fewer assigned, unfinished requests. The gateway also checks client limits and streams token events back to the client.
+
+**Each worker schedules.** Continuous admission fills freed slots at iteration boundaries. Selective batching combines suitable operations across active requests while keeping Attention and KV state request-local. Routing, admission and execution are separate decisions.
+
+**Evidence and verification.** Logs and an independent checker track assignment, token order, completion and cleanup. The simulator has a documented timing model, and its results are labeled separately from real-model measurements.
+
+The [recording](demo/TokenFlow_Demo.mp4) shows actual local inference at recorded speed, including chat, routing, model execution, cancellation and recovery. It has [English captions](demo/TokenFlow_Demo.srt). The performance comparisons below use separate controlled experiments. The report also has an [editable source](report/TokenFlow_Final_Report.md); the [full service guide](docs/LLM_README.md) describes controls and logs.
+
+<details>
+<summary>Preview the service dashboard</summary>
+
+![The TokenFlow service dashboard shows two online Qwen workers, their queues and slots, and completed request activity.](docs/assets/service-demo.png)
+
+A frame from the recorded real-model demo, after the stopped worker was manually restarted.
+
+</details>
 
 ## Run the demo
 
@@ -82,6 +78,15 @@ The main comparison uses the **real Qwen backend** with two workers and the same
 Values are means ± sample standard deviations **across runs**, with P95 calculated within each run. At 1/s, least outstanding reduced mean trial P95 time to first token. At both rates, the paired throughput-difference interval includes zero; the experiment does not establish a reliable throughput winner or prove equivalence. At 3/s, worker slots were full in about 90-93% of samples, while gateway process CPU was about 11% of one logical core. These observations show worker-side pressure, not proof that the entire CPU or memory subsystem was saturated.
 
 A separate, deliberately alternating long/short workload probes sensitivity to request order. It has 16 runs and 1,024 requests and should not be interpreted as typical production traffic. The complete routing archive contains **40 runs and 3,904 requests**; the required random-mix comparison above is its 24-run subset.
+
+<details>
+<summary>View the individual routing trials</summary>
+
+![Comparison of throughput, P95 first-token time and P95 completion time for the two routing policies at one and three requests per second.](evidence/routing/routing-comparison.png)
+
+Each dot is a run; bars show mean ± sample standard deviation. The percentages on the figure compare the two means. See the [paired effects](evidence/routing/paired-effects.csv) for uncertainty intervals.
+
+</details>
 
 ## Other experiments
 

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="520" viewBox="0 0 1440 520" role="img" aria-labelledby="title desc">
+  <title id="title">TokenFlow request path</title>
+  <desc id="desc">A client sends a request through one gateway to one of two workers. Each worker is an independent process with a full Qwen model, queue, scheduler, and request-local KV state. Tokens return to the client through the gateway. Both workers share one CPU host.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#365950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="520" rx="24" fill="#f6f7f1"/>
+  <rect x="1" y="1" width="1438" height="518" rx="23" fill="none" stroke="#e0e8df" stroke-width="2"/>
+
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="64" y="62" font-size="16" font-weight="700" letter-spacing="2" fill="#3a6b60">TOKENFLOW / REQUEST PATH</text>
+    <text x="64" y="108" font-size="37" font-weight="700" fill="#172d2a">One gateway. Two workers.</text>
+    <text x="1376" y="64" text-anchor="end" font-size="16" font-weight="600" letter-spacing="1" fill="#607a72">REAL QWEN · SHARED CPU HOST</text>
+
+    <rect x="64" y="176" width="258" height="155" rx="18" fill="#dfeafc"/>
+    <text x="90" y="211" font-size="15" font-weight="700" letter-spacing="1.5" fill="#406c9e">01 / CLIENT</text>
+    <text x="90" y="250" font-size="27" font-weight="700" fill="#203e58">Chat or workload</text>
+    <text x="90" y="286" font-size="18" fill="#496b88">Request + prompt</text>
+
+    <rect x="425" y="176" width="270" height="155" rx="18" fill="#ffe8cb"/>
+    <text x="451" y="211" font-size="15" font-weight="700" letter-spacing="1.5" fill="#a76628">02 / GATEWAY</text>
+    <text x="451" y="250" font-size="27" font-weight="700" fill="#664720">Admit and route</text>
+    <text x="451" y="286" font-size="18" fill="#846345">Limits · policy · health</text>
+
+    <text x="854" y="152" font-size="15" font-weight="700" letter-spacing="1.5" fill="#657b72">03 / INDEPENDENT PROCESSES</text>
+    <rect x="854" y="173" width="520" height="93" rx="16" fill="#dff1e5"/>
+    <rect x="854" y="288" width="520" height="93" rx="16" fill="#e8e7fb"/>
+    <circle cx="884" cy="207" r="6" fill="#34836d"/>
+    <circle cx="884" cy="322" r="6" fill="#7369b0"/>
+    <text x="902" y="213" font-size="22" font-weight="700" fill="#254d40">Worker 1</text>
+    <text x="902" y="248" font-size="17" fill="#4b7063">Queue · scheduler · full Qwen model</text>
+    <text x="902" y="328" font-size="22" font-weight="700" fill="#49446f">Worker 2</text>
+    <text x="902" y="363" font-size="17" fill="#69658d">Queue · scheduler · full Qwen model</text>
+
+    <path d="M328 253H417" stroke="#365950" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+    <text x="372" y="235" text-anchor="middle" font-size="14" font-weight="600" fill="#638078">HTTP</text>
+    <path d="M701 253H776V219H846" stroke="#365950" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+    <path d="M776 253V334H846" stroke="#365950" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+    <text x="763" y="202" text-anchor="middle" font-size="14" font-weight="600" fill="#638078">ASSIGN</text>
+
+    <rect x="64" y="421" width="1310" height="53" rx="12" fill="#ffffff" stroke="#e2e9e2"/>
+    <circle cx="91" cy="447" r="5" fill="#3d8a72"/>
+    <text x="110" y="454" font-size="18" fill="#304f46">Tokens stream back to the client through the gateway.</text>
+    <text x="1346" y="454" text-anchor="end" font-size="16" fill="#71847c">Each request keeps its own KV state.</text>
+  </g>
+</svg>
