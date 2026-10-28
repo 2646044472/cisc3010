@@ -1,6 +1,8 @@
 param(
     [ValidateSet('simulator', 'cpu-model')][string]$Backend = 'cpu-model',
-    [int]$Port = 8800
+    [int]$Port = 8800,
+    [ValidateRange(1, 16)][int]$Workers = 2,
+    [ValidateRange(1, 16)][int]$Threads = 2
 )
 $ErrorActionPreference = 'Stop'
 $projectDirectory = Split-Path -Parent $PSScriptRoot
@@ -21,4 +23,4 @@ if ($Backend -eq 'cpu-model') {
         if ($LASTEXITCODE -ne 0) { throw 'Failed to download model' }
     }
 }
-& $pythonExecutable -m llm_lab serve --backend $Backend --port $Port
+& $pythonExecutable -m llm_lab serve --backend $Backend --port $Port --workers $Workers --threads $Threads

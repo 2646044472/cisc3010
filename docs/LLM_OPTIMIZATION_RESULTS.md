@@ -1,6 +1,8 @@
 # TokenFlow: real serving optimizations - 20 October 2026
 
-Real Qwen2.5-0.5B-Instruct now uses Orca-style selective batching and bounded hybrid prefill inside each of two independent CPU workers. On the fixed congested workload below, selective batching increased successful request throughput by **46.7%** and reduced P95 first-token latency by **37.6%**. These are local application measurements, not simulator or GPU-paper results.
+The original experiment suites, request traces and output checks are available in the submission archive described in the [evidence guide](../evidence/README.md). Paths below beginning with `llm-results/` are the original local archive layout.
+
+Real Qwen2.5-0.5B-Instruct uses Orca-style selective batching and bounded hybrid prefill. The measurements on this page used **two independent CPU workers**. On the fixed congested workload below, selective batching increased successful request throughput by **46.7%** and reduced P95 first-token latency by **37.6%**. These are local application measurements, not simulator or GPU-paper results. A separate 1/2/4-replica comparison ran on 22 October, after which the application default remained two. That comparison does not alter or relabel these earlier two-worker optimization measurements.
 
 ## Implementation
 
@@ -49,7 +51,7 @@ Suite: `llm-results/experiment-a501f3f100`. Both policies use bounded prefill wi
 
 The measured throughput improvement is 46.7%; first-token P95 falls 37.6%; completion P95 falls 35.4%. These are ratios of the run means. The experiment does not establish the same improvement at other request rates or on other hardware.
 
-![Shared computation comparison](llm-results/experiment-a501f3f100/comparison.png)
+![Shared computation comparison](../evidence/additional/selective-batching.png)
 
 ## 2. Bounded prefill: a measured tradeoff
 
@@ -69,7 +71,7 @@ The application retains bounded prefill by default to reduce rare multi-second f
 
 Inter-token observations are pooled **within each trial**; the table then summarizes the three trial percentiles. Tokens are correlated within requests, so these are descriptive metrics, not independent statistical samples. P99 and maximum-gap diagnostics were added after the initial P95 analysis exposed the tradeoff; they should be validated on a larger preregistered workload before making general claims.
 
-![Prefill tradeoff](llm-results/experiment-bee76f24b0/comparison.png)
+![Prefill tradeoff](../evidence/additional/chunked-prefill.png)
 
 ## Functional regression checks
 

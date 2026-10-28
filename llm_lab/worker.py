@@ -49,6 +49,9 @@ class Engine:
         self.trace = Trace(worker_id)
         self.iteration_trace = Trace(worker_id + "-iterations")
         self.timeline = collections.deque(maxlen=100)
+        # Bounded observations for the execution inspector; no prompts or tensors.
+        self.recent_iterations = collections.deque(maxlen=32)
+        self.last_mixed_iteration = None
         self.config = {"scheduling": "continuous", "execution": "selective", "slots": 4, "kv_budget": 4096,
                        "chunked_prefill": True, "prefill_chunk": 128 if backend.name != "simulator" else 32,
                        "prefix_cache": False, "cache_budget": 512, "speed": 1.0}
@@ -99,6 +102,8 @@ class Engine:
             self.cache.clear()
             self.counters.clear()
             self.timeline.clear()
+            self.recent_iterations.clear()
+            self.last_mixed_iteration = None
             # Idle means every prior stream has a terminal event queued.
             self.jobs.clear()
             self.seen.clear()
@@ -156,6 +161,7 @@ class Engine:
                     "cpu_process_s": time.process_time(),
                     "backend": self.backend.name, "model": self.backend.model_id,
                     "revision": self.backend.revision, "dtype": getattr(self.backend, "dtype", None), "config": self.config.copy(),
+                    "model_threads": getattr(self.backend, "threads", None),
                     "queued": len(self.pending), "active": len(self.active),
                     "kv_reserved": sum(j.reservation for j in self.active),
                     "kv_used": sum(j.input_tokens - j.remaining_prefill + max(0, j.produced - 1)
@@ -171,7 +177,9 @@ class Engine:
                     "cache_keys": [" ".join(k) for k in self.cache],
                     "execution": self.config["execution"] if self.backend.name != "simulator" else "simulated",
                     "counters": dict(self.counters), "requests": requests,
-                    "timeline": list(self.timeline)}
+                    "timeline": list(self.timeline),
+                    "recent_iterations": list(self.recent_iterations),
+                    "last_mixed_iteration": self.last_mixed_iteration}
 
     def admit(self):
         if self.config["scheduling"] == "static" and self.active:
@@ -250,13 +258,19 @@ class Engine:
             self.counters["prefill_tokens"] += sum(size for _, size in prefills)
             self.counters["compute_ms"] += elapsed
             self.counters["shared_iterations"] += int(cfg["execution"] == "selective" and len(pieces) > 1)
-            # Keep the actual execution membership in raw evidence, independent
-            # of the public UI and output correctness checker.
+            observation = {"t": started, "event": "iteration", "worker": self.worker_id,
+                "index": self.counters["iterations"], "execution": cfg["execution"],
+                "request_ids": [j.request_id for j, _ in pieces],
+                "piece_tokens": [size for _, size in pieces], "duration_ms": elapsed,
+                "phases": ["prefill" if j.remaining_prefill else "decode" for j, _ in pieces],
+                "prefill_tokens": sum(size for _, size in prefills),
+                "prefill_budget": cfg["prefill_chunk"] if cfg["chunked_prefill"] else None}
+            self.recent_iterations.append(observation)
+            if "prefill" in observation["phases"] and "decode" in observation["phases"]:
+                self.last_mixed_iteration = observation
+            # The inspector uses the same observation as the saved trace.
             for run_id in {j.run_id for j, _ in pieces}:
-                self.iteration_trace.write(run_id, {"t": started, "event": "iteration", "worker": self.worker_id,
-                    "execution": cfg["execution"], "request_ids": [j.request_id for j, _ in pieces],
-                    "piece_tokens": [size for _, size in pieces], "duration_ms": elapsed,
-                    "prefill_tokens": sum(size for _, size in prefills)})
+                self.iteration_trace.write(run_id, observation)
             for job, size in prefills:
                 job.remaining_prefill -= size
                 if not job.cancel:
@@ -318,8 +332,8 @@ class Engine:
             self.pending.clear()
 
 
-def serve_worker(port, worker_id, backend_name="simulator", model_path=None):
-    backend = Simulator() if backend_name == "simulator" else CpuModel(model_path)
+def serve_worker(port, worker_id, backend_name="simulator", model_path=None, threads=2):
+    backend = Simulator() if backend_name == "simulator" else CpuModel(model_path, threads=threads)
     engine = Engine(worker_id, backend)
 
     class Handler(JsonHandlerMixin, BaseHTTPRequestHandler):

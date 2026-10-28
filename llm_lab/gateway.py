@@ -17,14 +17,21 @@ from .admission import Admission, AdmissionError
 
 
 class WorkerPool:
-    def __init__(self, port, backend, model_path):
+    def __init__(self, port, backend, model_path, worker_count=2, threads=2):
+        if type(worker_count) is not int or not 1 <= worker_count <= 16:
+            raise ValueError("worker count must be an integer from 1 to 16")
+        if type(threads) is not int or not 1 <= threads <= 16:
+            raise ValueError("threads per worker must be an integer from 1 to 16")
+        if type(port) is not int or not 1 <= port <= 65535 - worker_count:
+            raise ValueError("gateway and worker ports must fit within 1-65535")
         self.port = port
         self.backend = backend
         self.model_path = model_path
+        self.threads = threads
         self.processes = {}
         self.lock = threading.Lock()
         self.logs = []
-        self.urls = {f"worker-{i+1}": f"http://127.0.0.1:{port+i+1}" for i in range(2)}
+        self.urls = {f"worker-{i+1}": f"http://127.0.0.1:{port+i+1}" for i in range(worker_count)}
 
     def start(self, worker_id):
         with self.lock:
@@ -36,7 +43,8 @@ class WorkerPool:
             log = (folder / (str(self.port) + "-" + worker_id + ".log")).open("a", encoding="utf-8")
             self.logs.append(log)
             args = [sys.executable, "-m", "llm_lab", "worker", "--port",
-                    self.urls[worker_id].rsplit(":", 1)[1], "--id", worker_id, "--backend", self.backend]
+                    self.urls[worker_id].rsplit(":", 1)[1], "--id", worker_id, "--backend", self.backend,
+                    "--threads", str(self.threads)]
             if self.model_path:
                 args += ["--model-path", self.model_path]
             self.processes[worker_id] = subprocess.Popen(args, cwd=ROOT, stdout=log, stderr=log)
@@ -122,7 +130,7 @@ class Gateway:
             health = {}
             for wid, url in self.pool.urls.items():
                 self.pool.start(wid)
-                deadline = now() + 60
+                deadline = now() + 120
                 while True:
                     try:
                         current = json_http(url + "/health", timeout=0.5)
@@ -130,6 +138,8 @@ class Gateway:
                             break
                     except Exception:
                         pass
+                    if self.pool.processes[wid].poll() is not None:
+                        raise RuntimeError("worker exited during startup: " + wid + ". Check runs/llm/service logs")
                     if now() > deadline:
                         raise RuntimeError("worker did not become idle: " + wid)
                     self.stop_event.wait(0.1)
@@ -301,6 +311,7 @@ class Gateway:
             if run and run["status"] == "running":
                 run["completed"] = sum(r["run_id"] == run["run_id"] and r["status"] in TERMINAL for r in self.requests.values())
             return {"routing": self.policy, "backend": self.pool.backend, "workers": workers,
+                    "worker_count": len(workers), "deployment": "single_host_replicas",
                     "gateway_pid": os.getpid(), "gateway_cpu_s": time.process_time(),
                     "admission": self.admission.snapshot(self.requests.values()),
                     "requests": records, "run": run,
@@ -308,11 +319,9 @@ class Gateway:
                     "time": now()}
 
 
-def serve_gateway(port=8790, backend="simulator", model_path=None):
+def serve_gateway(port=8790, backend="simulator", model_path=None, worker_count=2, threads=2):
     from .experiment import RunController
-    pool = WorkerPool(port, backend, model_path)
-    for wid in pool.urls:
-        pool.start(wid)
+    pool = WorkerPool(port, backend, model_path, worker_count, threads)
     gateway = Gateway(pool)
     controller = RunController(gateway, port)
 
@@ -346,6 +355,8 @@ def serve_gateway(port=8790, backend="simulator", model_path=None):
                     return self.reply({"error": "result not found"}, 404)
             assets = {"/": ("index.html", "text/html"), "/app.js": ("app.js", "text/javascript"),
                       "/chat.js": ("chat.js", "text/javascript"),
+                      "/execution.js": ("execution.js", "text/javascript"),
+                      "/execution.css": ("execution.css", "text/css"),
                       "/style.css": ("style.css", "text/css")}
             if self.path not in assets:
                 return self.reply({"error": "not found"}, 404)
@@ -419,12 +430,18 @@ def serve_gateway(port=8790, backend="simulator", model_path=None):
                         record["finished"] = now()
                         gateway.event(record, "cancelled", worker=record["worker"], tokens=record["tokens"], reason="downstream disconnected before worker stream")
 
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    print(f"TokenFlow: http://127.0.0.1:{port} | backend={backend}", flush=True)
+    server = None
     try:
+        # Bind before loading replicas. A bind or subprocess-launch failure
+        # must pass through the same cleanup as an orderly service shutdown.
+        server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+        for wid in pool.urls:
+            pool.start(wid)
+        print(f"TokenFlow: http://127.0.0.1:{port} | backend={backend} | workers={worker_count}", flush=True)
         server.serve_forever(poll_interval=0.2)
     finally:
         controller.cancel.set()
         gateway.stop_event.set()
-        server.server_close()
+        if server is not None:
+            server.server_close()
         pool.close()

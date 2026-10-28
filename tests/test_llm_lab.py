@@ -10,8 +10,8 @@ from pathlib import Path
 from llm_lab.backend import Simulator
 from llm_lab.common import TERMINAL, token_for, validate_request
 from llm_lab.experiment import percentile
-from llm_lab.gateway import Gateway
-from llm_lab.worker import Engine
+from llm_lab.gateway import Gateway, WorkerPool
+from llm_lab.worker import Engine, Job
 from llm_lab.check import check_run
 from llm_lab.admission import Admission, AdmissionError
 
@@ -28,6 +28,33 @@ class SchedulerTests(unittest.TestCase):
 
     def job(self, rid, maximum=12, prompt="hello world"):
         return self.engine.submit({"request_id": rid, "max_tokens": maximum, "prompt": prompt})
+
+    def test_execution_observations_match_trace_and_reset(self):
+        self.engine.stop.set()
+        self.engine.thread.join(timeout=3)
+        self.engine.backend = types.SimpleNamespace(
+            name="cpu-model", model_id="test", revision="test",
+            iterate=lambda pieces, execution: [None for _ in pieces])
+        saved = []
+        self.engine.iteration_trace.write = lambda run_id, event: saved.append(event)
+        decode = Job("decode", "private prompt", 8, None, 4)
+        prefill = Job("prefill", "private prompt", 8, None, 12)
+        cfg = self.engine.config | {"prefill_chunk": 5}
+        for _ in range(40):
+            prefill.remaining_prefill = 12
+            self.engine.real_iteration([decode, prefill], cfg)
+        snapshot = self.engine.snapshot()
+        recent = snapshot["recent_iterations"]
+        self.assertEqual(len(recent), 32)
+        self.assertEqual(recent[-1], saved[-1])
+        self.assertEqual(recent[-1]["phases"], ["decode", "prefill"])
+        self.assertEqual(recent[-1]["piece_tokens"], [1, 5])
+        self.assertEqual(recent[-1]["prefill_tokens"], 5)
+        self.assertEqual(snapshot["last_mixed_iteration"], recent[-1])
+        self.assertNotIn("private prompt", json.dumps(recent))
+        self.engine.configure({})
+        self.assertEqual(self.engine.snapshot()["recent_iterations"], [])
+        self.assertIsNone(self.engine.snapshot()["last_mixed_iteration"])
 
     def drain(self, job):
         events = []
@@ -138,6 +165,35 @@ class RouterTests(unittest.TestCase):
         self.gateway.health["worker-1"]["healthy"] = False
         self.assertEqual(self.gateway.assign(self.request("healthy"))["worker"], "worker-2")
 
+    def test_four_worker_pool_balances_and_excludes_failed_replica(self):
+        from concurrent.futures import ThreadPoolExecutor
+        self.gateway.health = {f"worker-{i}": {"id": f"worker-{i}", "healthy": True} for i in range(1, 5)}
+        with ThreadPoolExecutor(max_workers=12) as executor:
+            records = list(executor.map(lambda i: self.gateway.assign(self.request("four" + str(i))), range(40)))
+        self.assertEqual(collections.Counter(r["worker"] for r in records), {f"worker-{i}": 10 for i in range(1, 5)})
+        self.gateway.health["worker-1"]["healthy"] = False
+        later = [self.gateway.assign(self.request("survivor" + str(i))) for i in range(9)]
+        self.assertEqual(collections.Counter(r["worker"] for r in later), {f"worker-{i}": 3 for i in range(2, 5)})
+
+    def test_pool_rejects_invalid_counts_threads_and_port_ranges(self):
+        for count in (0, 17, True):
+            with self.assertRaises(ValueError):
+                WorkerPool(8800, "simulator", None, worker_count=count)
+        with self.assertRaises(ValueError):
+            WorkerPool(65533, "simulator", None, worker_count=4)
+        with self.assertRaises(ValueError):
+            WorkerPool(8800, "simulator", None, threads=0)
+
+    def test_gateway_bind_failure_does_not_launch_or_leak_model_processes(self):
+        from unittest.mock import patch
+        from llm_lab.gateway import serve_gateway
+        with patch("llm_lab.gateway.ThreadingHTTPServer", side_effect=OSError("port occupied")), \
+             patch.object(WorkerPool, "start") as start, patch.object(WorkerPool, "close") as close:
+            with self.assertRaisesRegex(OSError, "port occupied"):
+                serve_gateway(port=8990, backend="simulator", worker_count=4)
+        start.assert_not_called()
+        close.assert_called_once()
+
     def test_work_estimator_uses_remaining_requested_budget(self):
         self.gateway.policy = "token_work"
         a = self.gateway.assign(self.request("long", 120))
@@ -188,6 +244,26 @@ class AdmissionTests(unittest.TestCase):
 
 
 class EvidenceTests(unittest.TestCase):
+    def test_checker_includes_fourth_replica_and_requires_its_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            request = {"request_id": "fourth", "prompt": "hello", "max_tokens": 1}
+            row = {"request_id": "fourth", "status": "completed", "sequences": [0], "text": token_for("hello", 0)}
+            workers = [{"id": f"worker-{i}", "healthy": True} for i in range(1, 5)]
+            for name, value in [("workload", [request]), ("config", {"backend": "simulator", "worker_start": workers}),
+                                ("requests", [row]), ("cleanup", {"outstanding": 0, "workers": workers})]:
+                (folder / (name + ".json")).write_text(json.dumps(value), encoding="utf-8")
+            gateway = [{"request_id": "fourth", "worker": "worker-4", "event": "assigned"},
+                       {"request_id": "fourth", "event": "completed"}]
+            events = [{"request_id": "fourth", "worker": "worker-4", "event": "token", "seq": 0},
+                      {"request_id": "fourth", "worker": "worker-4", "event": "completed"}]
+            (folder / "gateway.jsonl").write_text("\n".join(map(json.dumps, gateway)), encoding="utf-8")
+            evidence = folder / "worker-4.jsonl"
+            evidence.write_text("\n".join(map(json.dumps, events)), encoding="utf-8")
+            self.assertTrue(check_run(folder)["passed"])
+            evidence.unlink()
+            self.assertFalse(check_run(folder)["passed"])
+
     def test_checker_detects_corrupted_output_and_missing_terminal(self):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)

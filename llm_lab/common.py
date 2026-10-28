@@ -65,6 +65,14 @@ def read_events(path):
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+def read_worker_events(folder, iterations=False):
+    """Read every replica's evidence, keeping request and iteration logs separate."""
+    suffix = "-iterations" if iterations else ""
+    pattern = re.compile(r"worker-[0-9]+" + suffix + r"\.jsonl")
+    return [event for path in sorted(Path(folder).glob("worker-*.jsonl"))
+            if pattern.fullmatch(path.name) for event in read_events(path)]
+
+
 def validate_request(data):
     if not isinstance(data, dict):
         raise ValueError("request must be an object")

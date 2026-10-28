@@ -1,6 +1,8 @@
 # TokenFlow — Distributed LLM Serving Laboratory
 
-Topic 14 implementation: two independent inference workers, a request router, streaming output, an instrumented token scheduler, and reproducible short/long-request experiments. The existing Kafka laboratory remains available separately.
+**Reviewer entry point:** see the [repository README](../README.md), the [final report](../report/TokenFlow_Final_Report.pdf), and the [evidence guide](../evidence/README.md). Historical references below to `llm-results/` describe original local run locations; the submitted raw evidence is provided in the archives described by the evidence guide.
+
+Topic 14 implementation: a configurable inference-worker pool, a request router, streaming output, an instrumented token scheduler, and reproducible short/long-request experiments. The default deployment has two real model replicas on one host, selected after a measured 1/2/4-replica comparison. The existing Kafka laboratory remains available separately.
 
 ## Start
 
@@ -14,7 +16,9 @@ From the repository root on Windows, using Python 3.11 or later:
 .\scripts\start-llm.ps1 -Backend simulator -Port 8790
 ```
 
-Open http://127.0.0.1:8790 for the simulator or http://127.0.0.1:8800 for real inference. The gateway starts two owned subprocesses on port + 1 and port + 2. Each real worker loads Qwen2.5-0.5B-Instruct and uses two PyTorch intra-op threads and one inter-op thread. Model revision and package versions are pinned. Warmup occurs before readiness.
+Open http://127.0.0.1:8790 for the simulator or http://127.0.0.1:8800 for real inference. The gateway starts two owned subprocesses on ports 8801–8802 by default. Each real worker loads its own full Qwen2.5-0.5B-Instruct model and uses two PyTorch intra-op threads and one inter-op thread. Model revision and package versions are pinned. Warmup occurs before readiness.
+
+Use `-Workers 1`, `-Workers 2`, or `-Workers 4` to choose the pool size, and `-Threads 2` to set intra-op threads per replica. Counts from 1 to 16 are accepted, subject to available memory and CPU. For example, `.\scripts\start-llm.ps1 -Workers 4 -Threads 2`. The interface derives online counts and worker controls from the actual pool. Four workers have sixteen active slots in total, while per-client admission quotas remain independent of this capacity. Full replicas share host CPU and RAM. More replicas do not add hardware, and the service does not provide cross-host deployment, model sharding or automatic scaling. The default remains two because four brought limited throughput gains and longer tail token gaps in the current shared-host experiment. Earlier two-worker optimization measurements remain separate from the new replica-count comparison.
 
 Cross-platform equivalent:
 
@@ -22,7 +26,7 @@ Cross-platform equivalent:
 python -m llm_lab serve --backend simulator --port 8790
 python -m pip install -r requirements-llm.txt
 python -m llm_lab download-model
-python -m llm_lab serve --port 8800 --backend cpu-model
+python -m llm_lab serve --port 8800 --backend cpu-model --workers 2 --threads 2
 ```
 
 Windows/Python 3.13 is the validated environment. Other operating systems are supported by the standard-library design but not yet verified. Close services with Ctrl+C; an explicit orderly stop is also available through a local POST to `/api/shutdown` with `{}`. Managed subprocesses are stopped during orderly gateway shutdown. The application has multi-turn chat, browser-local conversation history, incremental output, stop-generation, and a separate service-status page. A maximum of 20 recent non-failed messages is sent as context per turn, and request admission still enforces the worker token budget. The UI's worker-stop action deliberately terminates only the selected owned subprocess.
@@ -34,7 +38,7 @@ The default Demo is an English chat application with multi-turn context, browser
 | Component | Responsibilities |
 | --- | --- |
 | Gateway process | Atomic worker selection, bounded outstanding count, four routing policies, heartbeat health observations, SSE relay, terminal accounting, experiment controller, dashboard. |
-| Two worker processes | FIFO queues, bounded active sets, static/continuous admission, token-step execution, KV token reservations, cancellation, bounded output queues. |
+| Configurable worker processes | Independent full model copies, FIFO queues, bounded active sets, static/continuous admission, token-step execution, KV token reservations, cancellation, bounded output queues. |
 | Simulator | Deterministic reference output, explicit prefill/decode costs, chunked prefill, local exact-prefix LRU cost model. |
 | CPU inference backend | Real Qwen2 selective batching, shared linear/MLP work, independent Attention/KV state, bounded hybrid prefill, greedy decoding, EOS and incremental text. |
 | Evidence tools | Saved workloads/configuration, client/gateway/worker JSONL, pressure samples, independent checker, per-request CSV, repeated comparisons, plot regeneration. |
@@ -92,14 +96,26 @@ Keep the selected service running in one terminal, then use another:
 
 Runs have unique IDs. Inputs and deterministic outputs are identical between configurations after removing run/request identity. Real-model requests cap long output budgets at 48 tokens; simulation uses 16/120-token short/long limits. Arrival times are fixed interval, open loop, with seed 3010 and a 30% probability of selecting a long request. Dispatch lateness is recorded to detect load-generator delay. Model weights and process startup are excluded; two warmup tokens per worker precede measurement, then caches and counters are reset.
 
-The required checker verifies workload/result IDs, ordered non-duplicated tokens, output limits, one assignment and terminal outcome, worker/client completion evidence, deterministic simulator output, and no gateway/active-slot/KV reservation leaks. Deliberate fault/cancel runs may pass lifecycle checks while `all_completed` is false. `scenario_verified` separately checks the expected observation. A worker killed during generation causes explicit failures; subsequent requests are routed to the surviving worker after failure detection. No partial-response replay or seamless recovery is claimed.
+The required checker verifies workload/result IDs, ordered non-duplicated tokens, output limits, one assignment and terminal outcome, worker/client completion evidence across every replica, deterministic simulator output, and no gateway/active-slot/KV reservation leaks. Deliberate fault/cancel runs may pass lifecycle checks while `all_completed` is false. `scenario_verified` separately checks the expected observation. A worker killed during generation causes explicit failures; subsequent requests are routed to healthy surviving workers after failure detection. Fault and heterogeneous-worker experiments require at least two configured replicas. No partial-response replay or seamless recovery is claimed.
+
+### Replica-count comparison
+
+See [the measured 1/2/4-replica tradeoff](LLM_SCALING_RESULTS.md) for current results and four-replica regression evidence.
+
+Stop other real-model services before running this local capacity experiment so their model processes do not compete with the measured cluster:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\benchmark_worker_scaling.py --worker-counts 1,2,4 --repeats 3 --count 24 --rate 6
+```
+
+The script owns a temporary gateway on port 8900 and starts each pool separately, alternating ascending/descending replica counts across repeats. It keeps prompts, output limits, arrival offsets, routing, per-worker threads and scheduling fixed, warms every model, checks all traces and compares exact output token IDs across runs. Startup is excluded from throughput. Each replica adds four active slots and two compute threads, so total slot/thread budgets grow. This measures replication on a shared host, not scalability across separate machines. Saved contracts, summaries and raw run references live under `runs/llm/scaling-TIMESTAMP/`. A single repetition is an exploratory observation, not evidence of a stable capacity gain.
 
 ## Measurements and artifacts
 
 Per-run output under `runs/llm/RUN_ID/`:
 
 - `config.json`, `workload.json`: environment, actual worker configuration, model identity, workload and service-cost assumptions.
-- `client.jsonl`, `gateway.jsonl`, `worker-1.jsonl`, `worker-2.jsonl`: request, assignment, prefill, token, and terminal traces.
+- `client.jsonl`, `gateway.jsonl`, `worker-N.jsonl`, `worker-N-iterations.jsonl`: request, assignment, prefill, token, terminal and execution traces for every configured replica.
 - `samples.jsonl`, `control.jsonl`: queue/active/KV pressure and process CPU time samples, plus fault/health transitions when present.
 - `requests.json`, `requests.csv`: client TTFT, completion latency, worker-local queue delay, output and outcome.
 - `cleanup.json`, `check.json`, `result.json`: resource-release evidence, correctness, metrics, and scenario observations.
@@ -125,4 +141,8 @@ This project is inspired by public mechanisms and does not claim to reproduce un
 
 ## Presentation use
 
-The Demo exposes chat and service status only. Present experimental plots and architectural explanations in the slide deck. A short functional sequence is: ask a question, ask a follow-up, stop a longer answer, send a concurrent request group, stop one worker, issue a new chat request through the survivor, and restart the worker. Explain partial-stream failure explicitly. `scripts/plot_llm_results.py` regenerates figure PNG/SVG and mean/sample-SD tables from raw evidence for the slides.
+The application exposes Chat, Service status, and Execution. Execution shows actual completed model iterations: request membership, prefill/decode pieces, shared prefill allowance, measured model-step duration, and worker capacity. Each worker retains its latest 32 observations and its most recent mixed step. Selecting a step pins an explicitly labelled captured observation while capacity gauges keep updating. The QKV/Attention/MLP diagram explains the selected execution path; it is not kernel-level tracing. Reconfiguration clears the observations. No prompts or model tensors are included in this telemetry.
+
+The Admission control tab shows actual client budgets and HTTP 429 outcomes. Run mixed workload uses 24 requests at 6/s; Send traffic burst uses 24 at 30/s. Both use continuous admission, selective execution, a shared 128-token prefill allowance, four slots and a 4096-token KV reservation budget per worker. These are functional demonstrations, not the repeated performance comparisons in the slides.
+
+The [submitted 3:30 recording](../demo/TokenFlow_Demo.mp4) shows the product in six sections, with real inference retained at recorded speed. It is functional evidence, distinct from the repeated benchmarks. The public experiment archives include raw worker iteration traces, and `scripts/plot_llm_results.py` regenerates experiment figures and mean/sample-SD tables separately.

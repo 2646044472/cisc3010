@@ -7,9 +7,14 @@ runs/
 # Local artifacts and presentation outputs
 output/
 papers/
+.codex-finalizer/
+TokenFlow_Presentation/
+verification-output/
+evidence/unpacked/
 *.pptx
 *.ppt
 *.pdf
+!report/TokenFlow_Final_Report.pdf
 # Experiment outputs (regenerate with scripts)
 docs/llm-results/
 docs/sample-results/

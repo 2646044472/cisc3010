@@ -1,0 +1,9 @@
+{
+  "all_40_runs_correct": true,
+  "all_3904_requests_completed": true,
+  "same_workload_within_each_comparison": true,
+  "identical_greedy_token_ids_within_each_workload_family": true,
+  "tokens_checked": 108800,
+  "resources_released": true,
+  "scope": "Two real Qwen replicas on one CPU host. Fixed final backend. Order diagnostic is intentional, not representative traffic."
+}

@@ -1,0 +1,107 @@
+1
+00:00:00,000 --> 00:00:06,000
+I start with a normal chat request. This is a real Qwen model running locally.
+
+2
+00:00:06,000 --> 00:00:13,000
+The reply streams through the gateway. Its time and token count appear below.
+
+3
+00:00:13,000 --> 00:00:20,000
+Now I ask a follow-up, using the earlier conversation as context.
+
+4
+00:00:20,000 --> 00:00:28,000
+Both turns are complete. Next, let's send several requests together.
+
+5
+00:00:28,000 --> 00:00:35,000
+I send twelve requests with round robin, which takes turns between the two workers.
+
+6
+00:00:35,000 --> 00:00:44,000
+Watch the slots fill and clear. Each worker has four active slots.
+
+7
+00:00:44,000 --> 00:00:52,000
+I switch to least outstanding. It chooses using the number of waiting and running requests.
+
+8
+00:00:52,000 --> 00:01:03,000
+The same twelve-request group finishes again. We compare performance separately in repeated tests.
+
+9
+00:01:03,000 --> 00:01:11,000
+The gateway checks each client's limits before choosing a worker.
+
+10
+00:01:11,000 --> 00:01:20,000
+This burst exceeds the demo client's limit. Excess requests receive HTTP 429.
+
+11
+00:01:20,000 --> 00:01:25,000
+Eight requests finish. Sixteen are rejected before reaching a worker.
+
+12
+00:01:25,000 --> 00:01:33,000
+The response includes a retry hint, so clients can try later.
+
+13
+00:01:33,000 --> 00:01:41,000
+Now I run a mixed workload and inspect an actual recorded model step.
+
+14
+00:01:41,000 --> 00:01:48,000
+The blue piece generates one token. The amber piece processes a prompt.
+
+15
+00:01:48,000 --> 00:01:57,000
+The prompt uses seventy of the shared 128-token allowance. Decode tokens are counted separately.
+
+16
+00:01:57,000 --> 00:02:06,000
+QKV and MLP share computation, while Attention and KV data stay separate for each request.
+
+17
+00:02:06,000 --> 00:02:15,000
+The service kept running while I inspected this step. All twenty-four requests have finished.
+
+18
+00:02:15,000 --> 00:02:25,000
+Each worker has its own model copy and steps. These counters show its actual work.
+
+19
+00:02:25,000 --> 00:02:35,000
+I request a longer answer, then stop it while the model is still generating.
+
+20
+00:02:35,000 --> 00:02:41,000
+The partial answer stays visible, with an explicit cancelled outcome.
+
+21
+00:02:41,000 --> 00:02:50,000
+Active slots and KV resources return to zero, ready for new requests.
+
+22
+00:02:50,000 --> 00:02:59,000
+Finally, I stop the worker that is generating this answer.
+
+23
+00:02:59,000 --> 00:03:03,000
+The interrupted answer shows an error, without replaying partial text.
+
+24
+00:03:03,000 --> 00:03:09,000
+A new request completes on the surviving worker while the other stays offline.
+
+25
+00:03:09,000 --> 00:03:18,000
+I restart the stopped worker and wait for its model to reload.
+
+26
+00:03:18,000 --> 00:03:25,000
+Now I send four new requests to check the restored service.
+
+27
+00:03:25,000 --> 00:03:30,000
+All four finish, using both workers. Capacity is available again.

@@ -10,6 +10,12 @@ PyTorch and Transformers provide neural-model execution and tokenizer/cache prim
 
 Validation includes a separate greedy-generation reference comparison, multi-process model/simulator runs, scheduler/routing tests, request-output and lifecycle checks, repeated experiments, and browser verification. Actual evidence and limitations belong in `docs/LLM_VALIDATION.md` and saved run artifacts. The student must inspect and understand the implementation, explain its assumptions, and verify the commands before submission. Cite the model, libraries, main paper and public engineering references; do not attribute this teaching implementation to OpenAI.
 
+On 22 October, Codex extended the fixed two-worker deployment into a configurable pool of 1–16 model processes, generalized UI counts and per-replica evidence checks, and added a reproducible shared-host replica-count benchmark. Four real replicas were tested. The final demo default remains two after measuring limited throughput gains and worse tail token gaps at four. Each replica still holds a complete model. This does not implement automatic scaling or multi-host orchestration.
+
+On 23 October, Codex added bounded observations from real worker iterations and an Execution inspector for explaining prefill/decode membership, selective execution and resource release. It also recorded real-model admission, cancellation and worker-failure scenarios, edited a 77-second presentation video, and aligned the demo slide and English speaker notes. Displayed iteration membership is checked against the saved worker trace. These captures are functional evidence and do not replace the repeated benchmarks.
+
+On 28 October, Codex assisted with the final repository organization, four-page report, evidence packaging, portable routing verifier, and short/long simulator analysis. All 32 automated tests were rerun, the 40 archived routing runs were rechecked against their raw traces, 12 Qwen reference cases were rerun, and a separate 12-trial simulator admission comparison was repeated. The real-model and simulator results remain separate. No specific presentation feedback was reported; the submission records that fact rather than attributing changes to invented comments.
+
 ## Topic 9 — Replay Lab (earlier prototype)
 
 Codex assisted with topic comparison, architecture, initial implementation, the local dashboard, deterministic crash scenarios, correctness checks and documentation.

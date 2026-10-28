@@ -11,11 +11,15 @@ def main():
     serve.add_argument("--port", type=int, default=8800)
     serve.add_argument("--backend", choices=["simulator", "cpu-model"], default="cpu-model")
     serve.add_argument("--model-path", default=str(ROOT / ".runtime" / "qwen25-05b"))
+    serve.add_argument("--workers", type=int, choices=range(1, 17), default=2, metavar="1-16")
+    serve.add_argument("--threads", type=int, choices=range(1, 17), default=2, metavar="1-16",
+                       help="PyTorch intra-op threads per model worker")
     worker = commands.add_parser("worker")
     worker.add_argument("--port", type=int, required=True)
     worker.add_argument("--id", required=True)
     worker.add_argument("--backend", choices=["simulator", "cpu-model"], default="simulator")
     worker.add_argument("--model-path")
+    worker.add_argument("--threads", type=int, choices=range(1, 17), default=2, metavar="1-16")
     commands.add_parser("download-model")
     health = commands.add_parser("health")
     health.add_argument("--url", default="http://127.0.0.1:8800")
@@ -38,10 +42,10 @@ def main():
     args = parser.parse_args()
     if args.command == "serve":
         from .gateway import serve_gateway
-        serve_gateway(args.port, args.backend, args.model_path)
+        serve_gateway(args.port, args.backend, args.model_path, args.workers, args.threads)
     elif args.command == "worker":
         from .worker import serve_worker
-        serve_worker(args.port, args.id, args.backend, args.model_path)
+        serve_worker(args.port, args.id, args.backend, args.model_path, args.threads)
     elif args.command == "download-model":
         import os
         os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"

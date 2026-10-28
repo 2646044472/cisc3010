@@ -10,7 +10,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from llm_lab.check import check_run
 from llm_lab.experiment import percentile
-from llm_lab.common import read_events
+from llm_lab.common import read_worker_events
 
 parser = argparse.ArgumentParser()
 parser.add_argument("folder", type=Path)
@@ -40,7 +40,7 @@ for result in results:
     elif reference != shape:
         raise RuntimeError("compared runs have different request content or output limits")
     if result["backend"] == "cpu-model":
-        events = read_events(source / "worker-1.jsonl") + read_events(source / "worker-2.jsonl")
+        events = read_worker_events(source)
         by_request = defaultdict(list)
         for event in events:
             if event["event"] == "token":
@@ -117,7 +117,9 @@ for ax, key in zip(axes, plot_metrics):
 axes[0].legend(frameon=False, fontsize=8)
 backend = results[0]["backend"]
 count = results[0]["count"]
-fig.suptitle(f"TokenFlow — {backend}; {count} fixed requests, 2 workers, 4 slots/worker\nIndividual trials and mean ± sample SD", fontsize=11)
+worker_counts = sorted({r.get("worker_count", 2) for r in results})
+worker_label = "/".join(str(n) for n in worker_counts)
+fig.suptitle(f"TokenFlow — {backend}; {count} fixed requests, {worker_label} workers, 4 slots/worker\nIndividual trials and mean ± sample SD", fontsize=11)
 fig.savefig(folder / "comparison.png", dpi=180)
 fig.savefig(folder / "comparison.svg")
 print(json.dumps(summary, indent=2))

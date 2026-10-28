@@ -1,0 +1,37 @@
+test_config_rejects_invalid_input_and_dataset_repeats (test_correctness.CorrectnessTests.test_config_rejects_invalid_input_and_dataset_repeats) ... ok
+test_correct_result_and_mutation_detection (test_correctness.CorrectnessTests.test_correct_result_and_mutation_detection) ... ok
+test_dedup_marker_rolls_back_with_failed_effect (test_correctness.CorrectnessTests.test_dedup_marker_rolls_back_with_failed_effect) ... ok
+test_idempotence_preserves_replay_evidence (test_correctness.CorrectnessTests.test_idempotence_preserves_replay_evidence) ... ok
+test_missing_unexpected_and_unpublished_are_detected (test_correctness.CorrectnessTests.test_missing_unexpected_and_unpublished_are_detected) ... ok
+test_non_idempotent_replay_changes_business_total (test_correctness.CorrectnessTests.test_non_idempotent_replay_changes_business_total) ... ok
+test_greedy_output_matches_reference_with_chunking (test_llm_batching.SelectiveBatchTests.test_greedy_output_matches_reference_with_chunking) ... ok
+test_projections_are_shared_and_intermediate_prefill_has_no_logits (test_llm_batching.SelectiveBatchTests.test_projections_are_shared_and_intermediate_prefill_has_no_logits) ... ok
+test_ragged_mixed_chunks_match_independent_full_forwards (test_llm_batching.SelectiveBatchTests.test_ragged_mixed_chunks_match_independent_full_forwards) ... ok
+test_real_scheduler_cancellation_and_bounded_prefill (test_llm_batching.SelectiveBatchTests.test_real_scheduler_cancellation_and_bounded_prefill) ... ok
+test_concurrency_and_budget_release_at_terminal_outcome (test_llm_lab.AdmissionTests.test_concurrency_and_budget_release_at_terminal_outcome) ... ok
+test_token_bucket_refill_and_client_isolation (test_llm_lab.AdmissionTests.test_token_bucket_refill_and_client_isolation) ... ok
+test_checker_detects_corrupted_output_and_missing_terminal (test_llm_lab.EvidenceTests.test_checker_detects_corrupted_output_and_missing_terminal) ... ok
+test_checker_includes_fourth_replica_and_requires_its_evidence (test_llm_lab.EvidenceTests.test_checker_includes_fourth_replica_and_requires_its_evidence) ... ok
+test_conversation_must_end_with_matching_user_prompt (test_llm_lab.InputTests.test_conversation_must_end_with_matching_user_prompt) ... ok
+test_path_escape_and_boolean_lengths_rejected (test_llm_lab.InputTests.test_path_escape_and_boolean_lengths_rejected) ... ok
+test_percentile_interpolates_and_handles_empty_samples (test_llm_lab.InputTests.test_percentile_interpolates_and_handles_empty_samples) ... ok
+test_four_worker_pool_balances_and_excludes_failed_replica (test_llm_lab.RouterTests.test_four_worker_pool_balances_and_excludes_failed_replica) ... ok
+test_gateway_bind_failure_does_not_launch_or_leak_model_processes (test_llm_lab.RouterTests.test_gateway_bind_failure_does_not_launch_or_leak_model_processes) ... ok
+test_pool_rejects_invalid_counts_threads_and_port_ranges (test_llm_lab.RouterTests.test_pool_rejects_invalid_counts_threads_and_port_ranges) ... ok
+test_simultaneous_assignments_balance_outstanding_counts (test_llm_lab.RouterTests.test_simultaneous_assignments_balance_outstanding_counts) ... ok
+test_unhealthy_worker_is_excluded (test_llm_lab.RouterTests.test_unhealthy_worker_is_excluded) ... ok
+test_work_estimator_uses_remaining_requested_budget (test_llm_lab.RouterTests.test_work_estimator_uses_remaining_requested_budget) ... ok
+test_active_cancellation_releases_kv_reservation (test_llm_lab.SchedulerTests.test_active_cancellation_releases_kv_reservation) ... ok
+test_continuous_admission_uses_freed_slot (test_llm_lab.SchedulerTests.test_continuous_admission_uses_freed_slot) ... ok
+test_duplicate_identifier_and_oversize_rejected (test_llm_lab.SchedulerTests.test_duplicate_identifier_and_oversize_rejected) ... ok
+test_execution_observations_match_trace_and_reset (test_llm_lab.SchedulerTests.test_execution_observations_match_trace_and_reset) ... ok
+test_kv_budget_serializes_requests_without_overcommit (test_llm_lab.SchedulerTests.test_kv_budget_serializes_requests_without_overcommit) ... ok
+test_output_is_ordered_and_matches_reference (test_llm_lab.SchedulerTests.test_output_is_ordered_and_matches_reference) ... ok
+test_prefix_cache_requires_exact_prefix_and_is_bounded (test_llm_lab.SchedulerTests.test_prefix_cache_requires_exact_prefix_and_is_bounded) ... ok
+test_queued_cancellation_releases_queue (test_llm_lab.SchedulerTests.test_queued_cancellation_releases_queue) ... ok
+test_static_batch_holds_admission_until_long_request_finishes (test_llm_lab.SchedulerTests.test_static_batch_holds_admission_until_long_request_finishes) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 6.283s
+
+OK

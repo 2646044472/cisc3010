@@ -1,5 +1,9 @@
 # TokenFlow validation — 14 October 2026
 
+The final expanded real-Qwen routing comparison is documented in the [submission README](../README.md#required-experiment-routing) and [evidence guide](../evidence/README.md). Historical `llm-results/` paths correspond to material in the evidence archives where listed.
+
+Four real model replicas were tested on 22 October, and the final demo default remains two. See [replica-count results and current regression checks](LLM_SCALING_RESULTS.md) for the completed 1/2/4-worker comparison. The evidence below retains its original two-worker setup.
+
 **Historical baseline.** The original evidence below records the 14 October implementation. Real selective batching and bounded real prefill were added on 20 October; the current checks, comparative results and limitations are in [LLM_OPTIMIZATION_RESULTS.md](LLM_OPTIMIZATION_RESULTS.md). Statements below about independent CPU forwards describe the earlier version.
 
 This records completed checks, not target performance. Default Demo: English UI, local Qwen2.5-0.5B-Instruct, two independent CPU worker processes, http://127.0.0.1:8800/. A separate simulator runs on port 8790 for controlled batching experiments.

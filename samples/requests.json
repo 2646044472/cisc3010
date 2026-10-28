@@ -1,0 +1,12 @@
+[
+  {
+    "name": "short",
+    "prompt": "Explain what a queue is in one sentence.",
+    "max_tokens": 16
+  },
+  {
+    "name": "longer",
+    "prompt": "A service has a gateway and two workers. Requests arrive at different times, enter worker queues, and produce their answers one token at a time. Explain how choosing the worker with fewer unfinished requests can affect the time a user waits for an answer.",
+    "max_tokens": 48
+  }
+]

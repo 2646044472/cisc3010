@@ -14,7 +14,7 @@ import urllib.request
 import uuid
 
 from .check import check_run
-from .common import RUNS, ROOT, TERMINAL, Trace, json_http, now, read_events, write_json
+from .common import RUNS, ROOT, TERMINAL, Trace, json_http, now, read_events, read_worker_events, write_json
 
 
 def percentile(values, fraction):
@@ -130,6 +130,8 @@ class RunController:
             raise ValueError("cache experiment uses the simulator")
         if scenario == "heterogeneous" and self.gateway.pool.backend != "simulator":
             raise ValueError("the slow-worker timing scenario uses the simulator")
+        if scenario in {"fault", "heterogeneous"} and len(self.gateway.pool.urls) < 2:
+            raise ValueError("this scenario requires at least two workers")
         with self.gateway.lock:
             if self.thread and self.thread.is_alive():
                 raise RuntimeError("a run is already active")
@@ -158,7 +160,7 @@ class RunController:
                 health = json_http(self.gateway.pool.urls["worker-2"] + "/configure", {"speed": 3.0})
                 with self.gateway.lock:
                     self.gateway.health["worker-2"] = health
-            # Warm both actual processes. Cache and counters are reset below.
+            # Warm every actual process. Cache and counters are reset below.
             for i, (wid, url) in enumerate(self.gateway.pool.urls.items()):
                 req = urllib.request.Request(url + "/generate", json.dumps({"prompt": "Explain a queue.", "max_tokens": 2,
                       "request_id": "warm-" + run["run_id"] + str(i)}).encode(), {"Content-Type": "application/json"})
@@ -189,8 +191,9 @@ class RunController:
                                        if self.gateway.pool.backend == "simulator" else {
                                            "execution": "Measured CPU operations; no simulated sleep",
                                            "batching": cfg["execution"], "prefill": "decode-first shared prefill token allowance"}),
-                      "environment": {"python": sys_version(), "platform": platform.platform(), "workers": 2,
-                                      "model_threads_per_worker": 2 if self.gateway.pool.backend == "cpu-model" else None},
+                      "environment": {"python": sys_version(), "platform": platform.platform(),
+                                      "workers": len(self.gateway.pool.urls), "deployment": "single_host_replicas",
+                                      "model_threads_per_worker": self.gateway.pool.threads if self.gateway.pool.backend == "cpu-model" else None},
                       "worker_start": [json_http(url + "/health") for url in self.gateway.pool.urls.values()]}
             config["admission_plans"] = self.gateway.admission.PLANS
             write_json(folder / "config.json", config)
@@ -256,7 +259,7 @@ class RunController:
             ttft = [r["ttft_ms"] for r in success if r["ttft_ms"] is not None]
             latencies = [r["latency_ms"] for r in success]
             local_waits = []
-            events = read_events(folder / "worker-1.jsonl") + read_events(folder / "worker-2.jsonl")
+            events = read_worker_events(folder)
             by_id = collections.defaultdict(dict)
             for e in events:
                 if e["event"] in {"queued", "started"}:
@@ -273,6 +276,7 @@ class RunController:
                 writer.writeheader()
                 writer.writerows(results)
             result = {"run_id": run["run_id"], "scenario": run["scenario"], "backend": self.gateway.pool.backend,
+                      "worker_count": len(self.gateway.pool.urls),
                       "routing": cfg["routing"], "scheduling": cfg["scheduling"], "execution": cfg["execution"], "rate": run["rate"],
                       "chunked_prefill": cfg["chunked_prefill"], "prefill_chunk": cfg["prefill_chunk"],
                       "count": len(results), "successes": len(success), "elapsed_s": elapsed,
@@ -307,7 +311,8 @@ class RunController:
             elif run["scenario"] == "cancel":
                 result["scenario_verified"] = check["passed"] and result["outcomes"].get("cancelled", 0) == expected_cancel and len(success) == len(results) - expected_cancel
             elif run["scenario"] == "fault":
-                result["scenario_verified"] = check["passed"] and bool(stops and detections) and result["outcomes"].get("failed", 0) > 0 and any(r["worker"] == "worker-2" and r["status"] == "completed" and r["start"] > min(stops) for r in results)
+                stopped_workers = {e["worker"] for e in controls if e["event"] == "worker_stop"}
+                result["scenario_verified"] = check["passed"] and bool(stops and detections) and result["outcomes"].get("failed", 0) > 0 and any(r["worker"] in self.gateway.pool.urls and r["worker"] not in stopped_workers and r["status"] == "completed" and r["start"] > min(stops) for r in results)
             elif run["scenario"] == "cache":
                 result["scenario_verified"] = check["all_completed"] and result["cache_hit_tokens"] > 0
             else:

@@ -3,7 +3,7 @@ from __future__ import annotations
 import collections
 import json
 from pathlib import Path
-from .common import TERMINAL, read_events, token_for
+from .common import TERMINAL, read_events, read_worker_events, token_for
 
 
 def check_run(folder):
@@ -12,7 +12,7 @@ def check_run(folder):
     config = json.loads((folder / "config.json").read_text(encoding="utf-8"))
     rows = json.loads((folder / "requests.json").read_text(encoding="utf-8"))
     gateway = read_events(folder / "gateway.jsonl")
-    workers = read_events(folder / "worker-1.jsonl") + read_events(folder / "worker-2.jsonl")
+    workers = read_worker_events(folder)
     errors = []
     ids = [item["request_id"] for item in rows]
     expected_ids = {item["request_id"] for item in manifest}
@@ -26,7 +26,7 @@ def check_run(folder):
         by_worker[e["request_id"]].append(e)
     settings = config.get("settings", {})
     if config.get("backend") == "cpu-model" and "execution" in settings:
-        iterations = read_events(folder / "worker-1-iterations.jsonl") + read_events(folder / "worker-2-iterations.jsonl")
+        iterations = read_worker_events(folder, iterations=True)
         processed = collections.Counter()
         real_inputs = {e["request_id"]: e["input_tokens"] for e in workers if e["event"] == "queued"}
         for event in sorted(iterations, key=lambda e: e["t"]):
@@ -82,6 +82,8 @@ def check_run(folder):
         elif terminal[0]["event"] != row["status"]:
             errors.append(rid + ": client/gateway outcome mismatch")
         we = by_worker[rid]
+        if assignments and any(e.get("worker") != assignments[0].get("worker") for e in we):
+            errors.append(rid + ": worker evidence differs from gateway assignment")
         if len({e["worker"] for e in we}) > 1:
             errors.append(rid + ": executed on multiple workers")
         if row["status"] == "completed":
@@ -117,6 +119,12 @@ def check_run(folder):
     if active:
         errors.append("admission trace still contains outstanding reservations")
     cleanup = json.loads((folder / "cleanup.json").read_text(encoding="utf-8"))
+    configured_workers = {w["id"] for w in config.get("worker_start", [])}
+    if configured_workers:
+        if {w["id"] for w in cleanup["workers"]} != configured_workers:
+            errors.append("cleanup does not cover the configured worker pool")
+        if any(e.get("worker") not in configured_workers for e in workers):
+            errors.append("execution evidence contains an unconfigured worker")
     if cleanup["outstanding"] != 0:
         errors.append("gateway outstanding requests leaked")
     for client in cleanup.get("admission", {}).get("clients", []):

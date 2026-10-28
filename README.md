@@ -1,132 +1,120 @@
-# CISC3010 — Distributed systems projects
+# TokenFlow: Distributed LLM Serving and Load Balancing
 
-**Selected project: Topic 14, TokenFlow.** A simple multi-turn chat application backed by two independent inference workers, load-aware routing, streaming generation, cancellation and worker-failure handling. See [TokenFlow setup and experiments](docs/LLM_README.md) and [the proposal](proposal.md). Use `scripts/start-llm.ps1 -Backend cpu-model -Port 8800` for the real model or `scripts/start-llm.ps1 -Backend simulator -Port 8790` for the separate simulator.
+**CISC3010 individual project, Topic 14** · CHEONG KIN NGAI (Bankey)
 
-The 20 October update adds real Orca-style selective batching and bounded prefill on Qwen CPU inference. See [paper-to-code notes](docs/LLM_PAPER_NOTES.md) and [measured optimization results](docs/LLM_OPTIMIZATION_RESULTS.md).
+TokenFlow is a small inference service with one gateway and a configurable pool of independent workers. It serves a real Qwen2.5-0.5B-Instruct model on CPU, streams generated tokens, and exposes queues, routing choices and worker execution. The central question is: **how do routing and worker scheduling affect throughput and response time when short and long requests share a service?**
 
-The earlier Kafka prototype is preserved below.
+The default demo uses two worker processes on one computer, each with a full model copy. This shared-host deployment illustrates independent processes and partial worker failure. Cross-host fault tolerance and production-scale capacity have not been established.
 
-# Replay Lab — Kafka consumer recovery
+## Start here
 
-CISC3010 project 9 working demo: a real Kafka broker, four partitions, separate Python consumers, a durable SQLite application sink, deterministic crashes and an independent event-ID checker. The UI is in Chinese.
+| For the reviewer | Where to look |
+| --- | --- |
+| Report: architecture, evidence and limitations | [Final report (PDF)](report/TokenFlow_Final_Report.pdf) · [editable source](report/TokenFlow_Final_Report.md) |
+| Working product demonstration | [3:30 recording](demo/TokenFlow_Demo.mp4) · [captions](demo/TokenFlow_Demo.srt) |
+| Setup, request lifecycle and controls | [Full service guide](docs/LLM_README.md) |
+| Raw data, experiments and figure regeneration | [Evidence guide](evidence/README.md) |
+| Tests and verification | [Correctness and tests](#correctness-and-tests) |
+| Source attribution and AI use | [AI_USE.md](AI_USE.md) · [paper-to-code notes](docs/LLM_PAPER_NOTES.md) |
 
-The input represents **synthetic AI inference telemetry**. No model inference is performed. Consumers calculate `usage_units = input_tokens + output_tokens`; this deliberately simple, non-idempotent application effect makes duplicate processing measurable.
+The recording shows actual local inference at its recorded speed. It demonstrates chat, routing, admission, model execution, cancellation and recovery. The performance comparisons below use separate controlled experiments.
 
-## Quick start (Windows PowerShell)
+## Architecture
 
-Requirements: Python 3.10+, Docker Desktop with its Linux engine running, or Java 17+ for the native local-broker alternative. The pinned dependencies are Kafka **4.3.1** and confluent-kafka **2.16.0**. This repo uses no paid service, API key or GPU. Ports: Kafka `19092`, native controller `19093`, dashboard `8787`, all on localhost.
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-docker compose up -d --wait
-.\.venv\Scripts\python.exe -m kafka_demo health
-.\.venv\Scripts\python.exe -m kafka_demo serve
+```text
+Chat / workload generator
+           |
+           v    HTTP requests + streamed token events
+       Gateway process
+  admission | routing | health | tracing
+           |
+     +-----+-----+
+     v           v
+  Worker 1    Worker 2       independent processes, same host
+  FIFO queue  FIFO queue
+  scheduler   scheduler
+  Qwen copy   Qwen copy      request-local KV state
+     \           /
+      +-- logs --+------> independent checker, metrics and figures
 ```
 
-Open **http://127.0.0.1:8787**. You can instead run `./scripts/start.ps1` to install dependencies, start Compose and serve the UI. See [actual validation results](docs/VALIDATION.md) and [demo screenshot](docs/demo.jpg). The checked-in `docs/sample-results/` contains four scenario runs and a complete 12-run experiment with raw evidence and figures.
+The gateway selects a healthy worker using round robin or least outstanding requests. Within a worker, continuous admission fills freed slots at iteration boundaries. Selective batching combines suitable operations across active requests while keeping Attention and KV state request-local. These are three distinct decisions. The simulator has its own documented timing model; simulation results are labeled separately from real-model measurements.
 
-### Native broker alternative
+## Run the demo
 
-If Docker Desktop is unavailable, this repository includes a local JVM broker launcher:
+**Validated environment:** Windows, Python 3.13.9, Intel Core Ultra 5 338H (12 logical CPUs), approximately 31.5 GiB RAM. The real model is `Qwen/Qwen2.5-0.5B-Instruct` in FP32. It needs about 1 GB of downloaded weights in addition to Python dependencies and runtime memory. A GPU is not required. The model revision and packages are pinned in [the service guide](docs/LLM_README.md) and [requirements-llm.txt](requirements-llm.txt).
+
+From the repository root in PowerShell:
 
 ```powershell
-.\scripts\broker.ps1 -Action Start
-.\.venv\Scripts\python.exe -m kafka_demo health
-.\.venv\Scripts\python.exe -m kafka_demo serve
+# Real Qwen inference; first run creates .venv and downloads dependencies/weights.
+.\scripts\start-llm.ps1 -Backend cpu-model -Port 8800 -Workers 2
+
+# Or start the standard-library simulator without model downloads.
+.\scripts\start-llm.ps1 -Backend simulator -Port 8790 -Workers 2
 ```
 
-Or use `./scripts/start.ps1 -NativeBroker`. The launcher downloads the official Apache binary into `.runtime/`, verifies its SHA512 checksum, formats only this demo's own KRaft storage, and starts Java with a 512 MB heap. It does not modify system Java, Docker settings or existing Kafka data. Native Windows is a local-demo fallback; Linux/Compose is the portable deployment path. Do not run both broker modes on the same port.
+Open <http://127.0.0.1:8800> for the model or <http://127.0.0.1:8790> for the simulator. Start them in separate terminals. The gateway port and following worker ports must be free: 8801-8802 or 8791-8792. Use `Ctrl+C` for orderly shutdown. Allow time for initial model loading and warmup.
 
-## Four live scenarios
+Send a chat request, open **Service status** to inspect queues or select a routing policy, and open **Execution** to inspect a saved model iteration. The worker-stop control demonstrates partial failure. Restart is manual; an interrupted answer reports failure and is not silently replayed.
 
-Select a scenario and click **启动实验**. Recommended presentation order:
-
-| Scenario | Offset/effect order and injected failure | Expected observation |
-|---|---|---|
-| `baseline` | Durable effect, then synchronous Kafka offset commit; no crash | All IDs present; no repeated effects |
-| `loss` | Commit offset, abruptly exit before writing target effect | At least one missing application effect |
-| `replay` | Write effect, abruptly exit before committing target offset | Replayed ID and repeated application effect |
-| `idempotent` | Same replay failure; transactionally deduplicate sink by event ID | Replayed attempt remains visible, with complete non-duplicated effects |
-
-The target is event sequence 0, sent explicitly to partition 0. The process exits using `os._exit(86)` without leaving its group gracefully. The controller starts a replacement process with a new PID/member identity. Kafka detects the failed member and reassigns partitions. A durable fault marker prevents repeated crashes on the same replayed event. The configured classic group session timeout is 6 seconds; replacement joining and polling also affect observed recovery time.
-
-**A verified failure experiment is not a correct business result.** `scenario_verified=true` means the intended observation occurred. `data_correct=true` means every published expected event produced exactly one valid durable effect. Loss/replay should verify the experiment while failing business correctness; idempotent recovery should pass both.
-
-## Headless demo and independent checks
+For a small command-line example, leave the simulator running and send the two checked-in [sample prompts](samples/requests.json):
 
 ```powershell
-.\.venv\Scripts\python.exe -m kafka_demo demo --scenario all --events 120 --consumers 2
-.\.venv\Scripts\python.exe -m kafka_demo demo --scenario idempotent --events 240
-.\.venv\Scripts\python.exe -m kafka_demo check runs\YOUR_RUN_DIRECTORY
+.\.venv\Scripts\python.exe scripts\send_sample.py --url http://127.0.0.1:8790
+```
+
+For the real backend use `--url http://127.0.0.1:8800`. The command prints each sample's assigned worker, first-token time, output length and final response.
+
+Other operating systems have not been verified for this submission. The simulator uses only Python's standard library; plotting additionally requires Matplotlib. Model weights and local runtime files are downloaded rather than committed.
+
+## Required experiment: routing
+
+The main comparison uses the **real Qwen backend** with two workers and the same short/long workload under round robin and least outstanding. Requests arrive at fixed intervals without waiting for earlier completions: one or three requests per second. There are 120 requests per run, six paired repeats per policy and arrival rate, and 2,880 requests in this comparison. Worker count, resource limits, scheduling, model execution and request content are held fixed within each pair. Policy order alternates between repeats.
+
+| Arrival rate | Policy | Requests/s | P95 first token, s | P95 completion, s |
+| --- | --- | ---: | ---: | ---: |
+| 1/s | Round robin | 0.964 ± 0.017 | 3.72 ± 1.29 | 13.13 ± 1.85 |
+| 1/s | Least outstanding | 0.971 ± 0.005 | 2.37 ± 0.29 | 11.53 ± 1.09 |
+| 3/s | Round robin | 1.294 ± 0.061 | 45.44 ± 4.40 | 52.63 ± 4.76 |
+| 3/s | Least outstanding | 1.269 ± 0.057 | 45.69 ± 2.75 | 53.34 ± 3.73 |
+
+Values are means ± sample standard deviations **across runs**, with P95 calculated within each run. At 1/s, least outstanding reduced mean trial P95 time to first token. At both rates, the paired throughput-difference interval includes zero; the experiment does not establish a reliable throughput winner or prove equivalence. At 3/s, worker slots were full in about 90-93% of samples, while gateway process CPU was about 11% of one logical core. These observations show worker-side pressure, not proof that the entire CPU or memory subsystem was saturated.
+
+A separate, deliberately alternating long/short workload probes sensitivity to request order. It has 16 runs and 1,024 requests and should not be interpreted as typical production traffic. The complete routing archive contains **40 runs and 3,904 requests**; the required random-mix comparison above is its 24-run subset.
+
+## Other experiments
+
+- **Selective execution, real Qwen:** with 24 requests per run and three runs per setting, throughput rose from 0.787 to 1.154 requests/s, a 46.7% increase in this test. This compares shared and separate model operations; it is not a routing gain.
+- **Chunked prefill, real Qwen:** P95 inter-token gaps rose from 544.6 to 854.6 ms while P99 decreased from 1,962.9 to 913.7 ms. There were three repeats, and P99 was inspected after the initial analysis. These are workload-specific descriptive results.
+- **Static versus continuous admission, simulator:** a separate controlled comparison tests when waiting requests enter workers under a stated timing model. It is not a real-model speedup claim.
+- **Worker failure, real Qwen:** in one 16-request run, nine completed and seven failed explicitly; detection was 0.554 s in that run. New requests used the surviving worker. Cancellation was a separate 12-request test.
+
+The [evidence guide](evidence/README.md) identifies the raw run directories, settings, scripts and archives for each claim. Outputs and figures can be independently checked and regenerated.
+
+## Correctness and tests
+
+```powershell
+# Complete automated suite, including the earlier Kafka lab tests.
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
 
-Global broker option goes before the command, e.g. `python -m kafka_demo --bootstrap localhost:19092 health`.
-
-Each run gets a unique topic/group and directory, avoiding cross-run offsets. The deterministic input seed is 3010. Topics retain data for 24 hours; they are not automatically deleted. Their names begin with `cisc3010-`. Only processes spawned by a run are stopped by that run.
-
-## Required consumer-count experiment
-
-```powershell
-.\.venv\Scripts\python.exe -m kafka_demo experiment --counts 1,2,4,6 --repeats 3 --events 240 --processing-ms 15
-```
-
-This holds partitions at four, replays the same event values and partition mapping with new IDs, and alternates consumer-count order between repetitions. The workload is a finite producer burst; elapsed time runs from production through observation of the final synchronous commit, excluding broker/topic/group startup. Processing includes a fixed per-event sleep, SQLite transactions and Kafka commits. Results are **application-pipeline measurements, not Kafka maximum-capacity benchmarks**. Consumers above the partition count can receive empty assignments.
-
-`runs/experiment-*/results.csv` records each repetition; `config.json` records controls and assumptions, and every nested run preserves raw evidence. Report variation rather than selecting a single best run. Use the plotting script below after installing its pinned optional requirement:
-
-```powershell
+# Recheck all 40 archived real-model routing trials and regenerate their figure.
 .\.venv\Scripts\python.exe -m pip install -r requirements-plots.txt
-.\.venv\Scripts\python.exe scripts\plot_results.py runs\experiment-YOUR_DIRECTORY
+.\.venv\Scripts\python.exe scripts\verify_routing_evidence.py
 ```
 
-The plot script checks every measured run's correctness and displays mean throughput with sample standard deviation and individual observations.
+On 28 October, all **32 automated tests** passed ([test log](evidence/verification/automated-tests.log)). A clean staged checkout started the simulator and real Qwen, and both completed requests with two healthy workers ([smoke checks](evidence/verification/clean-checks.json)). The real-model launcher was also checked with freshly installed Python dependencies and locally cached pinned weights; a full first-time weight download was not repeated. The routing verifier rechecks workload IDs, lifecycle, token order, execution accounting, cleanup, workload settings, P95 values and exact greedy token IDs within each workload family. Twelve real-model reference cases also matched Transformers-generated token IDs. These checks cover the tested cases.
 
-An eight-event warmup run precedes the measured runs and is excluded from the CSV; `warmup.json` identifies its raw artifacts. Local Python clients explicitly use IPv4 to match the loopback listener. Optional plot dependencies require Python 3.11+.
+To repeat a small simulator comparison, start the simulator and run the following in another terminal:
 
-## Evidence and architecture
-
-```mermaid
-flowchart LR
-    P[Controller / producer] -->|unique IDs, explicit partitions| K[Kafka: 4 partition logs]
-    K -->|records and offsets| A[Consumer process A]
-    K -->|records and offsets| B[Consumer process B]
-    A -->|synchronous offset commit| K
-    B -->|synchronous offset commit| K
-    A --> S[SQLite durable effects + attempt audit]
-    B --> S
-    S --> C[Independent ID and value checker]
-    S --> U[Local dashboard]
-    P -->|crash configuration / restart| A
+```powershell
+.\.venv\Scripts\python.exe -m llm_lab experiment --url http://127.0.0.1:8790 --kind batching --repeats 3 --count 48 --rates 6,18
 ```
 
-Every `runs/<id>/` contains:
-
-- `manifest.json`: config, versions/environment, topic/group, broker metadata, workload assumptions.
-- `input.jsonl`: exact sample input.
-- `audit.sqlite3`: expected delivery acknowledgements, all attempts, effects, dedup markers, faults, workers and timeline.
-- `expected.csv`, `attempts.csv`, `effects.csv`, `workers.csv`, `faults.csv`, `timeline.jsonl`: raw exports.
-- `result.json`: checker, duration, throughput, fault count and recovery measurement; or `error.json` for a failed run.
-- `consumer-*.log`: per-process diagnostics.
-
-An attempt is logged before application processing, `applied_at` after the sink transaction, and `committed_at` only after a successful synchronous Kafka commit. Committing a message acknowledges the **next offset** (processed offset + 1). SQLite dedup markers and business effects are in one transaction. The checker separately detects missing IDs, unexpected IDs, repeated effects, replayed attempts, corrupted usage values and unacknowledged input delivery.
-
-## Assumptions and limits
-
-- One KRaft broker with replication factor one suffices for this consumer experiment; broker availability and multi-broker replication are not demonstrated.
-- All processes share one host and one SQLite sink. WAL and a busy timeout permit concurrent readers/writers, but durable writes serialize. This limits local throughput.
-- UI polling adds observational load. Use the same observation configuration across compared runs. The completion monitor polls at 100 ms intervals; timing includes this observation granularity.
-- `recovery_to_processing_s` measures the interval from recorded crash to the first later receive on that partition, not just the internal rebalance duration.
-- No blanket exactly-once delivery claim: Kafka may replay messages; this demo's idempotent SQLite transaction prevents duplicate effects for retained event IDs. External APIs need their own idempotency mechanism. Sink loss, ID reuse, arbitrary simultaneous process failures and producer uncertainty are outside the demonstrated guarantee.
-- Performance variation and slowdowns are valid results. Measure before making speedup claims.
-
-## Stop
-
-Stop the dashboard with Ctrl+C; active consumer processes are cleaned up. Stop a native broker with `./scripts/broker.ps1 -Action Stop`, which checks that its saved PID still belongs to this demo's Java command. Stop Compose with `docker compose down`; the named data volume is retained.
+New suites and raw runs are written under `runs/llm/`; new observations may differ from archived measurements. See [the evidence guide](evidence/README.md) for checking and plotting commands.
 
 ## Reading and attribution
 
-- [Kafka: a Distributed Messaging System for Log Processing](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/09/Kafka.pdf): partitioned append-only logs, consumer progress and replay. Here the application effects live in SQLite and one local broker simplifies deployment; this does not reproduce Kafka's original cluster experiments.
-- [Apache Kafka quickstart](https://kafka.apache.org/quickstart/), [consumer configuration](https://kafka.apache.org/43/configuration/consumer-configs/), and [confluent-kafka Python client](https://docs.confluent.io/platform/current/clients/confluent-kafka-python/html/index.html).
-- [AI-use statement](AI_USE.md). This project is still an initial working demo; a final 3–4 page report, presentation-feedback changes and any optional replication extension remain future work.
+The main reading is Yu et al., [Orca: A Distributed Serving System for Transformer-Based Generative Models](https://www.usenix.org/conference/osdi22/presentation/yu), OSDI 2022. Orca's iteration-level scheduling motivates continuous admission and selective batching inside a worker. The required routing experiment instead changes the gateway's choice of worker for a whole request. TokenFlow uses full CPU replicas and existing PyTorch/Transformers primitives; it does not reproduce Orca's GPU model-parallel engine, PagedAttention, model training or a provider's private infrastructure.
+
+The project uses pretrained Qwen weights, PyTorch and Transformers. Codex provided substantial assistance across architecture, implementation, tests, experiments and documentation; the disclosure and checks are in [AI_USE.md](AI_USE.md). The earlier Kafka laboratory is preserved in [docs/KAFKA_LAB.md](docs/KAFKA_LAB.md).
