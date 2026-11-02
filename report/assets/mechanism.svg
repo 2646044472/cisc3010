@@ -11,43 +11,43 @@
 	<g id="group" transform="scale(1,-1) translate(0,-120)" style="clip-path: url(#clip)">
 		<g transform=" matrix(0.958175,0,0,0.958175,0,0)">
 			<text x="0" y="113" style="font-family: Helvetica-Bold; font-size: 7px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,226) scale(1,-1)">TOKEN PIECES</text>
-			<rect x="0" y="80" width="83" height="23" rx="3" ry="3" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
+			<rect x="0" y="80" width="83" height="23" rx="3" ry="3" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
 			<text x="19.331" y="88.8" style="font-family: Helvetica-Bold; font-size: 7px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,177) scale(1,-1)">A: decode (1)</text>
 			<path d="M 83,91.5 L 102,62 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="102 62, 101.7836 64.99219, 99.36525 63.4346" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
-			<rect x="0" y="51" width="83" height="23" rx="3" ry="3" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
+			<rect x="0" y="51" width="83" height="23" rx="3" ry="3" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
 			<text x="19.331" y="59.8" style="font-family: Helvetica-Bold; font-size: 7px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,119) scale(1,-1)">B: decode (1)</text>
 			<path d="M 83,62.5 L 102,62 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="102 62, 99.406 63.50704, 99.33033 60.63148" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
-			<rect x="0" y="22" width="83" height="23" rx="3" ry="3" style="stroke: rgb(70%,51%,24%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(98%,95%,90%); fill-rule: evenodd;"/>
+			<rect x="0" y="22" width="83" height="23" rx="3" ry="3" style="stroke: rgb(66%,47%,19%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(98%,95%,90%); fill-rule: evenodd;"/>
 			<text x="16.0235" y="30.8" style="font-family: Helvetica-Bold; font-size: 7px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,61) scale(1,-1)">C: prefill chunk</text>
 			<path d="M 83,33.5 L 102,62 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="102 62, 99.3429 60.60723, 101.7363 59.01161" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
-			<rect x="105" y="35" width="91" height="53" rx="3" ry="3" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
+			<rect x="105" y="35" width="91" height="53" rx="3" ry="3" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
 			<text x="121.67320000000001" y="64.5" style="font-family: Helvetica-Bold; font-size: 7.6px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,129) scale(1,-1)">Norm + Q / K / V</text>
 			<text x="112.51435000000001" y="52.5" style="font-family: Helvetica; font-size: 6.7px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,105) scale(1,-1)">Concatenated token rows</text>
 			<path d="M 196,61.5 L 212,61.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="212 61.5, 208.4897 63.4177, 208.4897 59.5823" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
 			<text x="219" y="113" style="font-family: Helvetica-Bold; font-size: 7px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,226) scale(1,-1)">REQUEST-LOCAL ATTENTION</text>
-			<rect x="219" y="80" width="123" height="23" rx="3" ry="3" style="stroke: rgb(43%,61%,56%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
+			<rect x="219" y="80" width="123" height="23" rx="3" ry="3" style="stroke: rgb(22%,49%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
 			<text x="244.511" y="88.8" style="font-family: Helvetica-Bold; font-size: 6.8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,177) scale(1,-1)">A: own KV + positions</text>
 			<path d="M 211,61.5 L 219,91.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="219 91.5, 216.9319 89.32674, 219.7114 88.58556" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
 			<path d="M 342,91.5 L 359,61.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="359 61.5, 358.9534 64.49964, 356.4507 63.08146" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
-			<rect x="219" y="51" width="123" height="23" rx="3" ry="3" style="stroke: rgb(43%,61%,56%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
+			<rect x="219" y="51" width="123" height="23" rx="3" ry="3" style="stroke: rgb(22%,49%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
 			<text x="244.511" y="59.8" style="font-family: Helvetica-Bold; font-size: 6.8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,119) scale(1,-1)">B: own KV + positions</text>
 			<path d="M 211,61.5 L 219,62.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="219 62.5, 216.2092 63.60062, 216.566 60.74628" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
 			<path d="M 342,62.5 L 359,61.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="359 61.5, 356.4563 63.09039, 356.2873 60.21881" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
-			<rect x="219" y="22" width="123" height="23" rx="3" ry="3" style="stroke: rgb(43%,61%,56%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
+			<rect x="219" y="22" width="123" height="23" rx="3" ry="3" style="stroke: rgb(22%,49%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
 			<text x="239.4008" y="30.8" style="font-family: Helvetica-Bold; font-size: 6.8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,61) scale(1,-1)">C: own KV + causal mask</text>
 			<path d="M 211,61.5 L 219,33.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="219 33.5, 219.6597 36.42657, 216.8938 35.63632" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
 			<path d="M 342,33.5 L 359,61.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="359 61.5, 356.4042 59.99599, 358.8631 58.50313" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(32%,37%,42%); fill-rule: evenodd;"/>
-			<rect x="363" y="35" width="99" height="53" rx="3" ry="3" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
+			<rect x="363" y="35" width="99" height="53" rx="3" ry="3" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
 			<text x="382.936" y="64.5" style="font-family: Helvetica-Bold; font-size: 7.6px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,129) scale(1,-1)">O + Norm + MLP</text>
 			<text x="376.75215000000003" y="52.5" style="font-family: Helvetica; font-size: 6.7px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,105) scale(1,-1)">Merge token rows again</text>
 			<path d="M 462,61.5 L 482,61.5 Z" style="stroke: rgb(32%,37%,42%); stroke-linecap: butt; stroke-width: 0.8;"/>

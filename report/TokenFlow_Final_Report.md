@@ -10,7 +10,7 @@ Serving requests with different lengths requires decisions both between model re
 
 An LLM service must choose where a request runs and how its tokens share computation with other requests. These choices interact with variable prompt lengths, variable output lengths, and the growing key-value (KV) state used by Attention. A low request count need not mean a low remaining token workload.
 
-This project asks two questions: **Does least-outstanding routing improve response time over round robin under a fixed mixed workload? Which benefits come from worker scheduling and shared computation instead?** TokenFlow exposes queues, active slots, execution pieces, and terminal outcomes so each claim can be tied to a measured mechanism.
+**Research questions.** Does least-outstanding routing improve response time over round robin on a fixed mixed workload? Which benefits come from worker scheduling and shared computation? TokenFlow exposes queues, slots, execution pieces, and terminal outcomes to connect each claim to a measured mechanism.
 
 The implementation adds gateway accounting, worker lifecycle, iteration scheduling, selective execution, and a trace checker around pretrained weights and existing tensor operations. The experiments distinguish whole-request routing from admission timing and shared computation.
 
@@ -23,23 +23,23 @@ Orca [1] motivates admitting requests at iteration boundaries and batching selec
 
 ## 2  System overview
 
-The gateway enforces local client limits (HTTP 429 with a retry hint), atomically selects a healthy worker using RR or LO, and relays streamed tokens. LO counts assigned, queued and running requests; terminal outcomes release counts. Each worker owns a FIFO queue, four active slots and request-local KV state. Continuous admission fills freed slots at iteration boundaries. Selective execution then shares compatible token-wise operations while keeping Attention separate (Figure 3). Client labels are a demo mechanism, rather than production authentication. The backend uses Qwen [2], PyTorch and Transformers [3, 4].
+The gateway enforces local client limits (HTTP 429 with a retry hint), atomically selects a healthy worker using round robin (RR) or least outstanding (LO), and relays streamed tokens. LO counts assigned requests that are queued or running; terminal outcomes release counts. Each worker owns a FIFO queue, four active slots and request-local KV state. Continuous admission fills freed slots at iteration boundaries. Selective execution then shares compatible token-wise operations while keeping Attention separate (Figure 3). Client labels are a demo mechanism, rather than production authentication. The backend uses Qwen [2], PyTorch and Transformers [3, 4].
 
 <!-- REGION p2-top -->
 ## 3  Controlled routing evaluation
 
-![**Figure 2. Real Qwen routing comparison.** RR: round robin; LO: least outstanding. Each open point is one trial; gray lines connect paired repeats. Heavy marks and whiskers show mean ± sample SD across six trials per setting. P95 is calculated within each trial. Axis scales differ between load conditions.](assets/routing.svg)
+![**Figure 2. Routing on real Qwen.** Six paired trials per policy and arrival rate; 120 requests/trial. Circles: trials; gray lines: pairs; diamonds and whiskers: mean ± sample SD. Horizontal jitter separates points. P95 is computed per trial; axes differ by load. RR: round robin; LO: least outstanding.](assets/routing.svg)
 
 <!-- REGION p2-left -->
 ### 3.1  Experimental setup
 
-The primary experiment uses Windows, Python 3.13.9, an Intel Core Ultra 5 338H with 12 logical CPUs, and approximately 31.5 GiB RAM. Both workers use FP32 Qwen2.5-0.5B-Instruct, two model threads each, four active slots, and a 4,096-token reservation budget. Continuous admission, selective execution, and a shared 128-token prefill allowance are held fixed.
+Experiments use Windows, Python 3.13.9, an Intel Core Ultra 5 338H (12 logical CPUs), and 31.5 GiB RAM. Each FP32 Qwen2.5-0.5B-Instruct worker has two model threads, four slots, and a 4,096-token reservation budget. Continuous admission, selective execution, and the 128-token prefill allowance stay fixed.
 
-Each trial sends the same saved mix of 120 short/long requests at fixed intervals, at 1 or 3 requests/s. Output caps are 16 or 48 tokens. Arrivals are **open loop**: sending a new request does not wait for earlier completions. Workers warm up before measurement; controlled benchmark quotas avoid admission rejections. At each rate, six paired repeats alternate policy order. The comparison contains 24 trials and 2,880 requests.
+Each trial replays 120 saved short/long requests at 1 or 3 requests/s, with output caps of 16 or 48 tokens. **Open-loop** arrivals do not wait for earlier completions. Workers warm up first; benchmark quotas avoid rejections. Six paired repeats per rate alternate policy order: 24 trials and 2,880 requests.
 
 ### 3.2  Metrics and uncertainty
 
-Throughput divides successful requests by the interval from first scheduled dispatch to final client outcome. Client-observed time to first token (TTFT) and completion time use one monotonic client clock. Per-trial P95 values are summarized across trials, rather than pooling requests across runs.
+Throughput divides successful requests by the interval from first scheduled dispatch to final client outcome. Time to first token (TTFT) and completion use one monotonic client clock. P95 is computed within each trial, then summarized across trials.
 
 Variation in Figure 2 is sample SD. The reported 95% intervals instead use Student-t intervals over six **paired trial differences**. Requests and tokens are not treated as independent repetitions. With six pairs, these intervals are approximate and generalization remains limited.
 
@@ -62,7 +62,7 @@ Outstanding request count does not measure remaining tokens, and RR already dist
 <!-- REGION p3-left -->
 ### 4.1  Shared execution on real Qwen
 
-![**Figure 4. Real-model execution comparison.** Independent forwards (Ind.) versus selective computation (Shared), with three paired trials of 24 requests per setting. Points are trials; whiskers are sample SD.](assets/execution.svg)
+![**Figure 4. Real Qwen execution.** Three paired trials of 24 requests per mode. Bars: means; whiskers: sample SD; circles: individual trials.](assets/execution.svg)
 
 Both modes use LO, continuous admission, two workers, arrivals at 6/s, and identical prompts, output caps, and bounded prefill. Both compute vocabulary logits only at output-producing positions. Only execution changes.
 
@@ -72,17 +72,17 @@ Throughput rises from 0.787 ± 0.008 to 1.154 ± 0.006 requests/s (**46.7%**). P
 
 Holding selective execution fixed, a separate comparison changes whole-prompt prefill to a 128-token shared allowance, with three trials per setting and 24 requests per trial. Intermediate chunks update KV without producing output.
 
-| **Gap metric (ms)** | **Whole prompt** | **128 tokens** |
-| --- | --- | --- |
-| P95 | 544.6 ± 6.9 | 854.6 ± 34.2 |
-| P99 | 1,962.9 ± 27.8 | 913.7 ± 21.0 |
+| **Gap** | **Whole prompt** | **128 tokens** | **Change** |
+| --- | --- | --- | --- |
+| P95 | 544.6 ± 6.9 | 854.6 ± 34.2 | +56.9% |
+| P99 | 1,962.9 ± 27.8 | 913.7 ± 21.0 | -53.5% |
 
-**Table 1. Real-model streaming tradeoff.** Mean ± sample SD of per-trial gap percentiles; lower is better.
+**Table 1. Streaming gaps (ms).** Mean ± sample SD of trial percentiles. Change compares means; lower is better.
 
 <!-- REGION p3-right -->
 ### 4.3  Continuous admission in the simulator
 
-![**Figure 5. Simulator admission comparison.** Mean trial P95 TTFT under static cohorts and continuous admission; three trials per setting, 48 requests per trial. These are simulated service times, not Qwen measurements.](assets/simulator.svg)
+![**Figure 5. Simulator admission.** Three trials per setting, 48 requests/trial. Bars: means; whiskers: sample SD; circles: trials. These times describe the simulator, not real Qwen.](assets/simulator.svg)
 
 The simulator holds LO routing, two workers, four slots, a 32-token prefill allowance, and the same request mix and timing model fixed. Static admission waits for an active cohort to finish before admitting another; continuous admission fills freed slots at step boundaries. Each trial has 36 short and 12 long requests. The 28 October rerun contains 12 trials and 576 requests.
 

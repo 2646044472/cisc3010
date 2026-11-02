@@ -4493,5 +4493,8 @@
       "repeat": 3
     }
   ],
-  "plot_convention": "Trials; heavy marks/whiskers are mean +/- sample SD. Gray lines connect routing/execution repeat pairs."
+  "plot_convention": {
+    "routing": "Open circles are trials (horizontal jitter only); gray lines pair repeats. Diamonds and whiskers are mean +/- sample SD.",
+    "execution_and_simulator": "Zero-based horizontal bars show means; whiskers show sample SD; open circles show individual trials (vertical jitter only)."
+  }
 }
