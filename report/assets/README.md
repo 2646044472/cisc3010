@@ -1,6 +1,6 @@
 # Report figures
 
-The PDF uses these native vector drawings, rather than screenshots or generated decorative images. Rebuild from the repository root with:
+The four-page PDF combines a full-width gray title/abstract card with a two-column body, sans-serif headings, serif text and native vector figures. Rebuild from the repository root with:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-report.txt
@@ -18,3 +18,7 @@ The PDF uses these native vector drawings, rather than screenshots or generated 
 Open points are individual trials. Heavy marks and whiskers are mean +/- sample SD. Gray lines connect repeat pairs in routing/execution plots. Plot scales and units are stated on the axes; real-model and simulator results remain separate. `figure-data.json` records the plotted trial records and source-file SHA256 hashes. `layout-check.json` records occupied and remaining points in each report frame; the builder rejects overflowing frames.
 
 Table 1 is transcribed from the separately validated prefill experiment documented in `docs/LLM_OPTIMIZATION_RESULTS.md`; its raw observations and aggregate table are in the additional evidence archive. The report's prose source is `report/TokenFlow_Final_Report.md`; hidden region comments control the four-page layout while remaining readable as Markdown.
+
+## Fonts
+
+The body embeds STIX General, distributed by Matplotlib under the SIL Open Font License. The four unmodified font files and their copyright/license notice are in `fonts/`. The builder needs only ReportLab; Matplotlib and system-installed fonts are not required. Headings and diagrams use PDF's standard Helvetica family. The visual reference document itself and its proprietary fonts, logos and annotations are not included.

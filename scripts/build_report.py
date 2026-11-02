@@ -1,4 +1,4 @@
-"""Rebuild the four-page, two-column report and vector figures from saved evidence.
+"""Rebuild the four-page report: reference-inspired title card and two-column body.
 
 Only ReportLab is required. No network, model inference or local run directory
 is used. Every figure is rebuilt from the submitted ZIP/CSV evidence.
@@ -21,16 +21,25 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen.canvas import Canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph, Table, TableStyle
 
 ROOT = Path(__file__).resolve().parents[1]
-INK, MUTED, RULE = [colors.HexColor(c) for c in ['#17212b','#52606c','#cbd2d9']]
-BLUE, AMBER, TEAL = [colors.HexColor(c) for c in ['#2366a1','#c37a24','#247f78']]
+INK, MUTED, RULE = [colors.HexColor(c) for c in ['#17212b','#52606c','#d3d9e2']]
+BLUE, AMBER, TEAL = [colors.HexColor(c) for c in ['#4f73a0','#b3833f','#6e9e90']]
 PALE_BLUE, PALE_AMBER, PALE_TEAL = [colors.HexColor(c) for c in ['#eef4fa','#fbf3e6','#edf6f3']]
 WHITE = colors.white
-W, H, MARGIN, GAP = 612, 792, 43, 20
+W, H, MARGIN, GAP = 612, 792, 54, 18
 FULL = W - 2 * MARGIN
 COL = (FULL - GAP) / 2
+
+FONT_ROOT=ROOT/'report/assets/fonts'
+for family,file in [('PaperSerif','STIXGeneral.ttf'),('PaperSerif-Bold','STIXGeneralBol.ttf'),
+                    ('PaperSerif-Italic','STIXGeneralItalic.ttf'),('PaperSerif-BoldItalic','STIXGeneralBolIta.ttf')]:
+    pdfmetrics.registerFont(TTFont(family,str(FONT_ROOT/file)))
+pdfmetrics.registerFontFamily('PaperSerif',normal='PaperSerif',bold='PaperSerif-Bold',
+                              italic='PaperSerif-Italic',boldItalic='PaperSerif-BoldItalic')
 
 
 def text(d, x, y, value, size=8, color=INK, font='Helvetica', anchor='start'):
@@ -55,28 +64,30 @@ def box(d,x,y,w,h,label,fill=WHITE,stroke=RULE,size=8,sub=None):
 
 
 def architecture():
-    d=Drawing(COL,221)
-    box(d,70,190,113,27,'Client / load generator',size=7.5)
-    d.add(Rect(2,20,COL-4,157,rx=4,ry=4,fillColor=None,strokeColor=RULE,
-               strokeWidth=.75,strokeDashArray=[3,2]))
-    text(d,10,165,'ONE SHARED CPU HOST',6.6,MUTED)
-    box(d,50,115,153,38,'Gateway process',PALE_BLUE,BLUE,
-        sub='Admission limits  |  RR / LO  |  streaming')
-    arrow(d,126.5,190,126.5,154,BLUE)
-    text(d,134,180,'HTTP',6.5,MUTED)
-    line(d,126.5,115,126.5,103,BLUE);line(d,62,103,191,103,BLUE)
-    arrow(d,62,103,62,93,BLUE);arrow(d,191,103,191,93,BLUE)
-    for x,label in [(10,'Worker 1'),(139,'Worker 2')]:
-        d.add(Rect(x,31,104,62,rx=3,ry=3,fillColor=PALE_TEAL,strokeColor=TEAL,strokeWidth=.7))
-        text(d,x+52,78,label,8,font='Helvetica-Bold',anchor='middle')
-        text(d,x+52,57,'FIFO queue + 4 active slots',6.6,anchor='middle')
-        text(d,x+52,45,'Qwen replica + own KV state',6.6,anchor='middle')
-    text(d,COL/2,8,'Traces: assignment, model steps, tokens, terminal state',6.8,MUTED,anchor='middle')
+    d=Drawing(COL,184)
+    box(d,(COL-114)/2,155,114,25,'Client / load generator',size=7.5)
+    d.add(Rect(2,18,COL-4,127,rx=6,ry=6,fillColor=None,strokeColor=RULE,
+               strokeWidth=.8,strokeDashArray=[3,2]))
+    text(d,10,133,'ONE SHARED CPU HOST',6.5,MUTED)
+    gx=(COL-153)/2
+    box(d,gx,88,153,35,'Gateway process',PALE_BLUE,BLUE,
+        sub='Admission  |  RR / LO  |  streaming')
+    arrow(d,COL/2,155,COL/2,123,BLUE)
+    text(d,COL/2+7,148,'HTTP',6.3,MUTED)
+    line(d,COL/2,88,COL/2,76,BLUE)
+    line(d,58,76,COL-58,76,BLUE)
+    for x,label in [(7,'Worker 1'),(COL-110,'Worker 2')]:
+        arrow(d,x+51.5,76,x+51.5,67,BLUE)
+        d.add(Rect(x,27,103,40,rx=4,ry=4,fillColor=PALE_TEAL,strokeColor=TEAL,strokeWidth=.7))
+        text(d,x+51.5,55,label,7.8,font='Helvetica-Bold',anchor='middle')
+        text(d,x+51.5,43,'FIFO queue | 4 active slots',6.3,anchor='middle')
+        text(d,x+51.5,33,'Qwen replica + own KV',6.3,anchor='middle')
+    text(d,COL/2,5,'Traces -> lifecycle / token / cleanup checker',6.6,MUTED,anchor='middle')
     return d
 
 
 def mechanism():
-    d=Drawing(FULL,126)
+    d=Drawing(526,126)
     text(d,0,113,'TOKEN PIECES',7,MUTED,'Helvetica-Bold')
     for y,label,fill,stroke in [(80,'A: decode (1)',PALE_BLUE,BLUE),
                                (51,'B: decode (1)',PALE_BLUE,BLUE),
@@ -95,6 +106,8 @@ def mechanism():
     arrow(d,462,61.5,482,61.5)
     text(d,486,65,'Next',8,font='Helvetica-Bold');text(d,486,53,'layer',8,font='Helvetica-Bold')
     text(d,105,6,'Repeat per transformer layer; output logits only at token-producing positions.',7,MUTED)
+    scale=FULL/526
+    d.scale(scale,scale);d.width=FULL;d.height=126*scale
     return d
 
 
@@ -135,41 +148,41 @@ def metric_panel(d,x,y,w,h,groups,title,ylabel,ymax,ticks,labels,palette,fmt='.2
 
 
 def routing_figure(rows):
-    d=Drawing(FULL,240)
+    d=Drawing(FULL,222)
     specs=[('requests_s','Throughput','requests/s',[[0,.5,1,1.5],[0,.5,1,1.5]],1.6,'.3f'),
            ('ttft_p95_ms','P95 first token','seconds',[[0,2,4,6],[0,20,40,60]],None,'.2f'),
            ('latency_p95_ms','P95 completion','seconds',[[0,5,10,15],[0,20,40,60]],None,'.2f')]
     for r,rate in enumerate([1.,3.]):
-        y=121 if r==0 else 0
-        text(d,0,y+113,f'({"a" if r==0 else "b"})  {int(rate)} request{"s" if rate>1 else ""}/s',8,BLUE,'Helvetica-Bold')
+        y=113 if r==0 else 0
+        text(d,0,y+104,f'({"a" if r==0 else "b"})  {int(rate)} request{"s" if rate>1 else ""}/s',8,BLUE,'Helvetica-Bold')
         for j,(metric,title,unit,ticks,ymax,fmt) in enumerate(specs):
             groups=[]
             for policy in ['round_robin','least_outstanding']:
                 selected=sorted([q for q in rows if q['rate']==rate and q['routing']==policy],key=lambda q:q['repeat'])
                 groups.append([q[metric]/(1000 if metric.endswith('_ms') else 1) for q in selected])
             maxy=ymax or (6.5 if r==0 and j==1 else 17 if r==0 else 65)
-            metric_panel(d,j*FULL/3,y,FULL/3-4,103,groups,title,unit,maxy,ticks[r],['RR','LO'],[BLUE,AMBER],fmt,True,False)
+            metric_panel(d,j*FULL/3,y,FULL/3-4,96,groups,title,unit,maxy,ticks[r],['RR','LO'],[BLUE,AMBER],fmt,True,False)
     return d
 
 
 def execution_figure(rows):
-    d=Drawing(COL,151)
+    d=Drawing(COL,129)
     for j,(metric,title,unit,ymax,ticks,fmt) in enumerate([
         ('requests_s','Throughput','requests/s',1.4,[0,.5,1.0],'.3f'),
         ('ttft_p95_ms','P95 first token','seconds',25,[0,10,20],'.2f')]):
         groups=[[q[metric]/(1000 if metric.endswith('_ms') else 1)
                  for q in sorted(rows,key=lambda q:q['repeat']) if q['execution']==p]
                 for p in ['sequential','selective']]
-        metric_panel(d,j*COL/2,0,COL/2,145,groups,title,unit,ymax,ticks,['Ind.','Shared'],[BLUE,AMBER],fmt,True)
+        metric_panel(d,j*COL/2,0,COL/2,125,groups,title,unit,ymax,ticks,['Ind.','Shared'],[BLUE,AMBER],fmt,True)
     return d
 
 
 def simulator_figure(rows):
-    d=Drawing(COL,151)
+    d=Drawing(COL,129)
     for j,rate in enumerate([6.,18.]):
         groups=[[q['ttft_p95_ms']/1000 for q in sorted(rows,key=lambda q:q['repeat'])
                  if q['rate']==rate and q['scheduling']==p] for p in ['static','continuous']]
-        metric_panel(d,j*COL/2,0,COL/2,145,groups,f'{int(rate)} requests/s','P95 TTFT (s)',
+        metric_panel(d,j*COL/2,0,COL/2,125,groups,f'{int(rate)} requests/s','P95 TTFT (s)',
                      15,[0,5,10,15],['Static','Cont.'],[BLUE,TEAL],'.2f')
     return d
 
@@ -180,21 +193,22 @@ def formatted(value):
     value=re.sub(r'\*(.+?)\*',r'<i>\1</i>',value)
     value=re.sub(r'`(.+?)`',r'<font name="Courier" size="7.2">\1</font>',value)
     value=re.sub(r'10\^(-?\d+)',r'10<super>\1</super>',value)
-    return re.sub(r'\[([^\]]+)\]\((https?://[^)]+)\)',r'<link href="\2" color="#2366a1">\1</link>',value)
+    value=re.sub(r'\[(\d+(?:, \d+)*)\]',r'<font color="#2379cb">[\1]</font>',value)
+    return re.sub(r'\[([^\]]+)\]\((https?://[^)]+)\)',r'<link href="\2" color="#2379cb">\1</link>',value)
 
 
-BODY=ParagraphStyle('body',fontName='Times-Roman',fontSize=9.5,leading=11.35,
-                    alignment=TA_JUSTIFY,textColor=INK,spaceAfter=5.8,allowWidows=0,allowOrphans=0)
+BODY=ParagraphStyle('body',fontName='PaperSerif',fontSize=9.7,leading=11.6,
+                    alignment=TA_JUSTIFY,textColor=INK,spaceAfter=5,allowWidows=0,allowOrphans=0)
 STYLES={
  'body':BODY,
- 'abstract':ParagraphStyle('abstract',parent=BODY,fontSize=9.2,leading=10.9),
- 'h1':ParagraphStyle('h1',parent=BODY,fontName='Times-Bold',fontSize=11.6,leading=13.4,
-                      spaceBefore=7,spaceAfter=4,alignment=TA_LEFT),
- 'h2':ParagraphStyle('h2',parent=BODY,fontName='Times-Bold',fontSize=9.8,leading=11.6,
+ 'abstract':ParagraphStyle('abstract',parent=BODY,fontSize=10.1,leading=12.15),
+ 'h1':ParagraphStyle('h1',parent=BODY,fontName='Helvetica-Bold',fontSize=11.4,leading=13.5,
+                      spaceBefore=7,spaceAfter=5,alignment=TA_LEFT),
+ 'h2':ParagraphStyle('h2',parent=BODY,fontName='Helvetica-Bold',fontSize=9.9,leading=12,
                       spaceBefore=4,spaceAfter=3,alignment=TA_LEFT),
- 'caption':ParagraphStyle('caption',parent=BODY,fontSize=8.1,leading=9.6,spaceAfter=7,alignment=TA_LEFT),
- 'ref':ParagraphStyle('ref',parent=BODY,fontSize=8.1,leading=9.4,spaceAfter=6,alignment=TA_LEFT),
- 'table':ParagraphStyle('table',parent=BODY,fontSize=7.8,leading=9.2,spaceAfter=0,alignment=TA_LEFT),
+ 'caption':ParagraphStyle('caption',parent=BODY,fontSize=8.2,leading=9.7,spaceAfter=7,alignment=TA_LEFT),
+ 'ref':ParagraphStyle('ref',parent=BODY,fontSize=8.4,leading=9.8,spaceAfter=4,alignment=TA_LEFT),
+ 'table':ParagraphStyle('table',parent=BODY,fontSize=7.8,leading=9.3,spaceAfter=0,alignment=TA_LEFT),
 }
 
 
@@ -238,6 +252,31 @@ def draw_region(canvas,content,x,top,width,bottom,figures,label):
     return round(top-y,1),round(y-bottom,1)
 
 
+def draw_title_card(canvas,abstract):
+    """Reference-inspired single-column title/abstract block, without annotations."""
+    inner=FULL-34
+    title=ParagraphStyle('card-title',fontName='Helvetica-Bold',fontSize=18.3,
+                         leading=22,textColor=INK,alignment=TA_LEFT)
+    author=ParagraphStyle('author',fontName='Helvetica-Bold',fontSize=9.8,leading=12,textColor=INK)
+    meta=ParagraphStyle('meta',parent=BODY,fontSize=9.3,leading=11.5,alignment=TA_LEFT)
+    items=[
+      (Paragraph('TokenFlow: Request Routing and<br/>Iteration-Level LLM Serving',title),11),
+      (Paragraph('CHEONG KIN NGAI (Bankey)',author),4),
+      (Paragraph('CISC3010 Distributed Systems | Individual Project | Topic 14',meta),15),
+      (Paragraph(formatted(abstract.strip()),STYLES['abstract']),14),
+      (Paragraph('<font name="Helvetica-Bold" size="8.8">Report:</font> Final submission, 2 November 2026<br/>'
+                 '<font name="Helvetica-Bold" size="8.8">Artifacts:</font> Code, recorded demo, raw traces and reproducible figures',meta),0)]
+    measured=[(p,p.wrap(inner,1000)[1],gap) for p,gap in items]
+    height=34+sum(h+gap for p,h,gap in measured)
+    top=730;bottom=top-height
+    canvas.setFillColor(colors.HexColor('#f1f3f6'))
+    canvas.roundRect(MARGIN,bottom,FULL,height,11,fill=1,stroke=0)
+    y=top-17
+    for para,h,gap in measured:
+        y-=h;para.drawOn(canvas,MARGIN+17,y);y-=gap
+    return bottom
+
+
 def build(source,target):
     assets=source.parent/'assets';assets.mkdir(exist_ok=True)
     routing=suite(ROOT/'evidence/routing/raw-routing.zip','random-suite/results.json')
@@ -255,34 +294,29 @@ def build(source,target):
     (assets/'figure-data.json').write_text(json.dumps(provenance,indent=2),encoding='utf-8')
     raw=source.read_text(encoding='utf-8')
     regions=dict(re.findall(r'<!-- REGION ([a-z0-9-]+) -->\s*(.*?)(?=<!-- REGION|\Z)',raw,re.S))
-    expected=['p1-left','p1-right','p2-top','p2-left','p2-right','p3-top','p3-left','p3-right','p4-left','p4-right']
+    expected=['p1-abstract','p1-left','p1-right','p2-top','p2-left','p2-right',
+              'p3-top','p3-left','p3-right','p4-left','p4-right']
     if list(regions)!=expected:raise ValueError(f'Regions must appear in order: {expected}')
     target.parent.mkdir(parents=True,exist_ok=True)
     c=Canvas(str(target),pagesize=(W,H),pageCompression=1)
-    c.setTitle('TokenFlow: Request Routing and Iteration-Level Execution for Local LLM Serving')
+    c.setTitle('TokenFlow: Request Routing and Iteration-Level LLM Serving')
     c.setAuthor('CHEONG KIN NGAI (Bankey)');c.setSubject('CISC3010 Topic 14 - Final project report')
     geometry={
-      'p1-left':(MARGIN,648,COL,48),'p1-right':(MARGIN+COL+GAP,648,COL,48),
-      'p2-top':(MARGIN,744,FULL,445),
-      'p2-left':(MARGIN,440,COL,48),'p2-right':(MARGIN+COL+GAP,440,COL,48),
-      'p3-top':(MARGIN,744,FULL,553),
-      'p3-left':(MARGIN,548,COL,48),'p3-right':(MARGIN+COL+GAP,548,COL,48),
-      'p4-left':(MARGIN,744,COL,48),'p4-right':(MARGIN+COL+GAP,744,COL,48)}
+      'p2-top':(MARGIN,730,FULL,440),
+      'p2-left':(MARGIN,437,COL,50),'p2-right':(MARGIN+COL+GAP,437,COL,50),
+      'p3-top':(MARGIN,730,FULL,540),
+      'p3-left':(MARGIN,532,COL,50),'p3-right':(MARGIN+COL+GAP,532,COL,50),
+      'p4-left':(MARGIN,730,COL,50),'p4-right':(MARGIN+COL+GAP,730,COL,50)}
     sizes={}
     for page in range(1,5):
-        c.setFillColor(MUTED);c.setFont('Helvetica',7)
-        c.drawString(MARGIN,767,'TOKENFLOW  /  CISC3010 TOPIC 14');c.drawRightString(W-MARGIN,767,'FINAL PROJECT REPORT')
-        c.setStrokeColor(RULE);c.setLineWidth(.5);c.line(MARGIN,760,W-MARGIN,760)
         if page==1:
-            c.setFillColor(INK);c.setFont('Times-Bold',19.5)
-            c.drawCentredString(W/2,724,'TokenFlow: Request Routing and Iteration-Level')
-            c.drawCentredString(W/2,701,'Execution for Local LLM Serving')
-            c.setFont('Times-Roman',10.5);c.drawCentredString(W/2,678,'CHEONG KIN NGAI (Bankey)')
-            c.setFont('Helvetica',8);c.drawCentredString(W/2,663,'Distributed Systems  |  Individual Project  |  Topic 14')
+            bottom=draw_title_card(c,regions['p1-abstract'])
+            geometry['p1-left']=(MARGIN,bottom-17,COL,50)
+            geometry['p1-right']=(MARGIN+COL+GAP,bottom-17,COL,50)
         for name in expected:
-            if name.startswith(f'p{page}-'):
+            if name.startswith(f'p{page}-') and name!='p1-abstract':
                 sizes[name]=draw_region(c,regions[name],*geometry[name],figures,name)
-        c.setFillColor(MUTED);c.setFont('Times-Roman',8);c.drawCentredString(W/2,27,str(page));c.showPage()
+        c.setFillColor(INK);c.setFont('PaperSerif',9);c.drawCentredString(W/2,27,str(page));c.showPage()
     c.save();(assets/'layout-check.json').write_text(json.dumps(sizes,indent=2),encoding='utf-8')
     print(json.dumps({'output':str(target),'regions_used_and_remaining_pt':sizes},indent=2))
 

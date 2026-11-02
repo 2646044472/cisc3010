@@ -2,39 +2,39 @@
 <!DOCTYPE svg
   PUBLIC '-//W3C//DTD SVG 1.0//EN'
   'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
-<svg width="253.0" height="221" preserveAspectRatio="xMinYMin meet" viewBox="0 0 253 221" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="243.0" height="184" preserveAspectRatio="xMinYMin meet" viewBox="0 0 243 184" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<title>...</title>
 	<desc>...</desc>
 	<clipPath id="clip">
-		<rect x="0" y="0" width="253.0" height="221"/>
+		<rect x="0" y="0" width="243.0" height="184"/>
 	</clipPath>
-	<g id="group" transform="scale(1,-1) translate(0,-221)" style="clip-path: url(#clip)">
+	<g id="group" transform="scale(1,-1) translate(0,-184)" style="clip-path: url(#clip)">
 		<g transform="">
-			<rect x="70" y="190" width="113" height="27" rx="3" ry="3" style="stroke: rgb(79%,82%,85%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
-			<text x="86.9075" y="200.8" style="font-family: Helvetica-Bold; font-size: 7.5px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,401) scale(1,-1)">Client / load generator</text>
-			<rect x="2" y="20" width="249.0" height="157" rx="4" ry="4" style="stroke: rgb(79%,82%,85%); stroke-linecap: butt; stroke-width: 0.75; fill: none; fill-rule: evenodd; stroke-dasharray: 3, 2;"/>
-			<text x="10" y="165" style="font-family: Helvetica; font-size: 6.6px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,330) scale(1,-1)">ONE SHARED CPU HOST</text>
-			<rect x="50" y="115" width="153" height="38" rx="3" ry="3" style="stroke: rgb(13%,40%,63%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
-			<text x="93.596" y="137.0" style="font-family: Helvetica-Bold; font-size: 8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,274) scale(1,-1)">Gateway process</text>
-			<text x="66.49145" y="125.0" style="font-family: Helvetica; font-size: 6.7px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,250) scale(1,-1)">Admission limits  |  RR / LO  |  streaming</text>
-			<path d="M 126.5,190 L 126.5,154 Z" style="stroke: rgb(13%,40%,63%); stroke-linecap: butt; stroke-width: 0.8;"/>
-			<polygon points="126.5 154, 128.4177 157.5103, 124.5823 157.5103" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(13%,40%,63%); fill-rule: evenodd;"/>
-			<text x="134" y="180" style="font-family: Helvetica; font-size: 6.5px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,360) scale(1,-1)">HTTP</text>
-			<path d="M 126.5,115 L 126.5,103 Z" style="stroke: rgb(13%,40%,63%); stroke-linecap: butt; stroke-width: 0.65;"/>
-			<path d="M 62,103 L 191,103 Z" style="stroke: rgb(13%,40%,63%); stroke-linecap: butt; stroke-width: 0.65;"/>
-			<path d="M 62,103 L 62,93 Z" style="stroke: rgb(13%,40%,63%); stroke-linecap: butt; stroke-width: 0.8;"/>
-			<polygon points="62 93, 63.9177 96.51033, 60.0823 96.51033" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(13%,40%,63%); fill-rule: evenodd;"/>
-			<path d="M 191,103 L 191,93 Z" style="stroke: rgb(13%,40%,63%); stroke-linecap: butt; stroke-width: 0.8;"/>
-			<polygon points="191 93, 192.9177 96.51033, 189.0823 96.51033" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(13%,40%,63%); fill-rule: evenodd;"/>
-			<rect x="10" y="31" width="104" height="62" rx="3" ry="3" style="stroke: rgb(14%,49%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
-			<text x="44.884" y="78" style="font-family: Helvetica-Bold; font-size: 8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,156) scale(1,-1)">Worker 1</text>
-			<text x="21.5552" y="57" style="font-family: Helvetica; font-size: 6.6px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,114) scale(1,-1)">FIFO queue + 4 active slots</text>
-			<text x="19.538899999999998" y="45" style="font-family: Helvetica; font-size: 6.6px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,90) scale(1,-1)">Qwen replica + own KV state</text>
-			<rect x="139" y="31" width="104" height="62" rx="3" ry="3" style="stroke: rgb(14%,49%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
-			<text x="173.88400000000001" y="78" style="font-family: Helvetica-Bold; font-size: 8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,156) scale(1,-1)">Worker 2</text>
-			<text x="150.5552" y="57" style="font-family: Helvetica; font-size: 6.6px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,114) scale(1,-1)">FIFO queue + 4 active slots</text>
-			<text x="148.5389" y="45" style="font-family: Helvetica; font-size: 6.6px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,90) scale(1,-1)">Qwen replica + own KV state</text>
-			<text x="42.41120000000001" y="8" style="font-family: Helvetica; font-size: 6.8px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,16) scale(1,-1)">Traces: assignment, model steps, tokens, terminal state</text>
+			<rect x="64.5" y="155" width="114.0" height="25" rx="3" ry="3" style="stroke: rgb(82%,85%,88%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="81.9075" y="164.8" style="font-family: Helvetica-Bold; font-size: 7.5px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,329) scale(1,-1)">Client / load generator</text>
+			<rect x="2" y="18" width="239.0" height="127" rx="6" ry="6" style="stroke: rgb(82%,85%,88%); stroke-linecap: butt; stroke-width: 0.8; fill: none; fill-rule: evenodd; stroke-dasharray: 3, 2;"/>
+			<text x="10" y="133" style="font-family: Helvetica; font-size: 6.5px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,266) scale(1,-1)">ONE SHARED CPU HOST</text>
+			<rect x="45.0" y="88" width="153.0" height="35" rx="3" ry="3" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(93%,95%,98%); fill-rule: evenodd;"/>
+			<text x="88.596" y="108.5" style="font-family: Helvetica-Bold; font-size: 8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,217) scale(1,-1)">Gateway process</text>
+			<text x="70.0507" y="96.5" style="font-family: Helvetica; font-size: 6.7px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,193) scale(1,-1)">Admission  |  RR / LO  |  streaming</text>
+			<path d="M 121.5,155 L 121.5,123 Z" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="121.5 123, 123.4177 126.5103, 119.5823 126.5103" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(30%,45%,62%); fill-rule: evenodd;"/>
+			<text x="128.5" y="148" style="font-family: Helvetica; font-size: 6.3px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,296) scale(1,-1)">HTTP</text>
+			<path d="M 121.5,88 L 121.5,76 Z" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.65;"/>
+			<path d="M 58,76 L 185,76 Z" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.65;"/>
+			<path d="M 58.5,76 L 58.5,67 Z" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="58.5 67, 60.4177 70.51033, 56.5823 70.51033" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(30%,45%,62%); fill-rule: evenodd;"/>
+			<rect x="7" y="27" width="103" height="40" rx="4" ry="4" style="stroke: rgb(43%,61%,56%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
+			<text x="41.8119" y="55" style="font-family: Helvetica-Bold; font-size: 7.8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,110) scale(1,-1)">Worker 1</text>
+			<text x="20.9142" y="43" style="font-family: Helvetica; font-size: 6.3px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,86) scale(1,-1)">FIFO queue | 4 active slots</text>
+			<text x="25.67385" y="33" style="font-family: Helvetica; font-size: 6.3px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,66) scale(1,-1)">Qwen replica + own KV</text>
+			<path d="M 184.5,76 L 184.5,67 Z" style="stroke: rgb(30%,45%,62%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="184.5 67, 186.4177 70.51033, 182.5823 70.51033" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(30%,45%,62%); fill-rule: evenodd;"/>
+			<rect x="133.0" y="27" width="103.0" height="40" rx="4" ry="4" style="stroke: rgb(43%,61%,56%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,96%,95%); fill-rule: evenodd;"/>
+			<text x="167.8119" y="55" style="font-family: Helvetica-Bold; font-size: 7.8px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,110) scale(1,-1)">Worker 2</text>
+			<text x="146.9142" y="43" style="font-family: Helvetica; font-size: 6.3px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,86) scale(1,-1)">FIFO queue | 4 active slots</text>
+			<text x="151.67385000000002" y="33" style="font-family: Helvetica; font-size: 6.3px;fill: rgb(9%,12%,16%); stroke:none;" transform="translate(0,66) scale(1,-1)">Qwen replica + own KV</text>
+			<text x="57.21600000000001" y="5" style="font-family: Helvetica; font-size: 6.6px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,10) scale(1,-1)">Traces -&gt; lifecycle / token / cleanup checker</text>
 		</g>
 	</g>
 </svg>
