@@ -1,12 +1,12 @@
 # TokenFlow — Distributed LLM Serving Laboratory
 
-**Reviewer entry point:** see the [repository README](../README.md), the [final report](../report/TokenFlow_Final_Report.pdf), and the [evidence guide](../evidence/README.md). Historical references below to `llm-results/` describe original local run locations; the submitted raw evidence is provided in the archives described by the evidence guide.
+**Reviewer entry point:** see the [repository README](../README.md), the [final report](../../report.pdf), and the [evidence guide](../evidence/README.md). Historical references below to `llm-results/` describe original local run locations; the submitted raw evidence is provided in the archives described by the evidence guide.
 
 Topic 14 implementation: a configurable inference-worker pool, a request router, streaming output, an instrumented token scheduler, and reproducible short/long-request experiments. The default deployment has two real model replicas on one host, selected after a measured 1/2/4-replica comparison. The existing Kafka laboratory remains available separately.
 
 ## Start
 
-From the repository root on Windows, using Python 3.11 or later:
+From the `code/` directory on Windows, using Python 3.11 or later:
 
 ```powershell
 # Real CPU model; initial setup downloads about 1 GB of weights plus dependencies.

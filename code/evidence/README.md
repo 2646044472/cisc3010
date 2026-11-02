@@ -1,8 +1,10 @@
 # Experiment evidence and reproducibility
 
-Start with the [final report](../report/TokenFlow_Final_Report.pdf) and [main README](../README.md). This folder holds the submitted inputs, results, traces and figures. All workloads are synthetic. The real-model experiments use Qwen locally; no production traffic or external API is represented.
+Start with the [final report](../../report.pdf) and [main README](../README.md). This folder holds the submitted inputs, results, traces and figures. All workloads are synthetic. The real-model experiments use Qwen locally; no production traffic or external API is represented.
 
 The [32-test log](verification/automated-tests.log) and [clean-checkout checks](verification/clean-checks.json) record the 28 October validation. [Raw traces for three clean-checkout smoke runs](verification/clean-smoke-runs.zip) are available separately. The fresh real-model launcher used a newly installed virtual environment and an existing pinned weight cache; the full initial weight download was not repeated.
+
+The [2 November directory-reorganization check](verification/reorganization-checks.json) records a new pass of all 32 tests, revalidation of the 40 archived routing runs, and a two-worker simulator startup with sample streaming from the relocated `code/` directory. This check does not add new performance measurements.
 
 ## Which results belong to which experiment?
 
@@ -22,7 +24,7 @@ The 40 routing runs contain 3,904 requests and 108,800 output tokens. The 2,880-
 
 [Download raw-routing.zip](routing/raw-routing.zip) (about 8.5 MB). It contains the saved suite manifests and every run's `config.json`, `workload.json`, `requests.json`, client/gateway/worker traces, pressure samples, output and cleanup records. The archive has no model weights. The original [per-request CSV](routing/all-requests.csv) and [validation record](routing/validation.json) are also available without extraction.
 
-From the repository root, after starting either backend once to create `.venv`:
+From the `code/` directory, after starting either backend once to create `.venv`:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-plots.txt
@@ -90,4 +92,4 @@ There are only 12 long requests per trial; their P95 values are coarse. The reru
 .\.venv\Scripts\python.exe scripts\build_report.py
 ```
 
-The editable source is [TokenFlow_Final_Report.md](../report/TokenFlow_Final_Report.md). The output is the four-page PDF linked at the top of this guide.
+The editable source is [TokenFlow_Final_Report.md](../report-source/TokenFlow_Final_Report.md). The output is the four-page PDF linked at the top of this guide.

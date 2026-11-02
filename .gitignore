@@ -14,7 +14,7 @@ evidence/unpacked/
 *.pptx
 *.ppt
 *.pdf
-!report/TokenFlow_Final_Report.pdf
+!/report.pdf
 # Experiment outputs (regenerate with scripts)
 docs/llm-results/
 docs/sample-results/
@@ -22,3 +22,8 @@ docs/sample-results/
 .env
 .env.*
 !.env.example
+
+# Outputs under the organized code directory
+code/evidence/unpacked/
+code/docs/llm-results/
+code/docs/sample-results/

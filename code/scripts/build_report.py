@@ -34,7 +34,7 @@ W, H, MARGIN, GAP = 612, 792, 54, 18
 FULL = W - 2 * MARGIN
 COL = (FULL - GAP) / 2
 
-FONT_ROOT=ROOT/'report/assets/fonts'
+FONT_ROOT=ROOT/'report-source/assets/fonts'
 for family,file in [('PaperSerif','STIXGeneral.ttf'),('PaperSerif-Bold','STIXGeneralBol.ttf'),
                     ('PaperSerif-Italic','STIXGeneralItalic.ttf'),('PaperSerif-BoldItalic','STIXGeneralBolIta.ttf')]:
     pdfmetrics.registerFont(TTFont(family,str(FONT_ROOT/file)))
@@ -325,7 +325,7 @@ def build(source,target):
     for key,d in figures.items():renderSVG.drawToFile(d,str(assets/f'{key}.svg'))
     sources=['evidence/routing/raw-routing.zip','evidence/routing/paired-effects.csv',
              'evidence/additional/raw-additional-experiments.zip','evidence/additional/simulator-rerun-summary.csv']
-    provenance={'sources':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sources},
+    provenance={'sources':{'code/'+p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sources},
                 'routing_trials':routing,'execution_trials':execution,'simulator_trials':simulator,
                 'plot_convention':{'routing':'Two columns separate arrival rates; three rows separate metrics. Solid points are means, horizontal whiskers are sample SD, and numeric labels are means. Raw trials are retained here, not overplotted.',
                                    'execution_and_simulator':'Zero-based horizontal bars show means; whiskers show sample SD; open circles show individual trials (vertical jitter only).'}}
@@ -361,6 +361,6 @@ def build(source,target):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source',type=Path,default=ROOT/'report/TokenFlow_Final_Report.md')
-    parser.add_argument('--output',type=Path,default=ROOT/'report/TokenFlow_Final_Report.pdf')
+    parser.add_argument('--source',type=Path,default=ROOT/'report-source/TokenFlow_Final_Report.md')
+    parser.add_argument('--output',type=Path,default=ROOT.parent/'report.pdf')
     args=parser.parse_args();build(args.source,args.output)

@@ -1,6 +1,6 @@
 # Submission requirements and evidence
 
-This guide maps the submitted work to the [assignment snapshot](../CISC3010_Distributed_Systems_Individual_Project.md) and [proposal](../proposal.md). It is a reading aid, not an additional performance claim. The snapshot was retrieved on 12 October 2026; this audit does not establish whether the instructor subsequently changed the requirements.
+This guide maps the submitted work to the [assignment snapshot](CISC3010_Distributed_Systems_Individual_Project.md) and [proposal](proposal.md). It is a reading aid, not an additional performance claim. The snapshot was retrieved on 12 October 2026; this audit does not establish whether the instructor subsequently changed the requirements.
 
 ## Assignment core: Topic 14
 
@@ -38,8 +38,8 @@ The two tested routing rates represent light and overloaded conditions; they are
 | Assignment deliverable | Where to find it |
 | --- | --- |
 | Source, setup, dependencies, hardware, startup, demo and experiment commands | [Main README](../README.md), [service guide](LLM_README.md), pinned requirements and [sample requests](../samples/requests.json) |
-| Configuration, generators, checks, raw results and plotting scripts | [Evidence guide](../evidence/README.md), `llm_lab/experiment.py`, `llm_lab/check.py`, `scripts/verify_routing_evidence.py`, `scripts/plot_llm_results.py`, `scripts/build_report.py` |
-| Three-to-four-page report: question, architecture, implementation, correctness, experiments, interpretation, limitations | [Four-page PDF](../report/TokenFlow_Final_Report.pdf); references fit within the same four pages |
+| Configuration, generators, checks, raw results and plotting scripts | [Evidence guide](../evidence/README.md), `code/llm_lab/experiment.py`, `code/llm_lab/check.py`, `code/scripts/verify_routing_evidence.py`, `code/scripts/plot_llm_results.py`, `code/scripts/build_report.py` |
+| Three-to-four-page report: question, architecture, implementation, correctness, experiments, interpretation, limitations | [Four-page PDF](../../report.pdf); references fit within the same four pages |
 | Changes following presentation and own additions | Report Section 7 identifies evaluation and verification added after the presentation and distinguishes implementation contributions from Qwen/PyTorch/Transformers. It reports actual changes without attributing them to unrecorded feedback. |
 | AI assistance and external-code attribution | [AI-use statement](../AI_USE.md), report Section 7 and references |
 

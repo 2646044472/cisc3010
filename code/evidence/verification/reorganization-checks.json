@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-02",
+  "automated_tests": {
+    "passed": 32,
+    "failed": 0,
+    "command": "python -m unittest discover -s tests -v"
+  },
+  "archived_routing": {
+    "passed": true,
+    "trials": 40,
+    "requests": 3904,
+    "tokens_checked": 108800
+  },
+  "relocated_launcher": {
+    "backend": "simulator",
+    "workers": 2,
+    "healthy": true,
+    "homepage": 200,
+    "sample_requests_completed": 2,
+    "command": "scripts/start-llm.ps1 -Backend simulator -Port 19070 -Workers 2"
+  },
+  "scope": "Directory relocation validation; real-model inference was not rerun."
+}
