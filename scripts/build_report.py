@@ -73,7 +73,7 @@ def architecture():
     box(d,gx,88,153,35,'Gateway process',PALE_BLUE,BLUE,
         sub='Admission  |  RR / LO  |  streaming')
     arrow(d,COL/2,155,COL/2,123,BLUE)
-    text(d,COL/2+7,148,'HTTP',6.3,MUTED)
+    text(d,COL/2+7,148,'HTTP / SSE',6.3,MUTED)
     line(d,COL/2,88,COL/2,76,BLUE)
     line(d,58,76,COL-58,76,BLUE)
     for x,label in [(7,'Worker 1'),(COL-110,'Worker 2')]:
@@ -327,7 +327,7 @@ def build(source,target):
              'evidence/additional/raw-additional-experiments.zip','evidence/additional/simulator-rerun-summary.csv']
     provenance={'sources':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sources},
                 'routing_trials':routing,'execution_trials':execution,'simulator_trials':simulator,
-                'plot_convention':{'routing':'Open circles are trials (horizontal jitter only); gray lines pair repeats. Diamonds and whiskers are mean +/- sample SD.',
+                'plot_convention':{'routing':'Two columns separate arrival rates; three rows separate metrics. Solid points are means, horizontal whiskers are sample SD, and numeric labels are means. Raw trials are retained here, not overplotted.',
                                    'execution_and_simulator':'Zero-based horizontal bars show means; whiskers show sample SD; open circles show individual trials (vertical jitter only).'}}
     (assets/'figure-data.json').write_text(json.dumps(provenance,indent=2),encoding='utf-8')
     raw=source.read_text(encoding='utf-8')

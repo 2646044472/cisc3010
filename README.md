@@ -17,6 +17,8 @@ TokenFlow runs a real Qwen2.5-0.5B-Instruct model behind a gateway and a configu
 
 The default demo uses two worker processes on one computer. Each holds a full model copy. This shared-host deployment illustrates independent processes and partial worker failure; cross-host fault tolerance and production-scale capacity have not been established.
 
+The [requirements and evidence map](docs/SUBMISSION_REQUIREMENTS.md) links each Topic 14 requirement and proposal extension to its implementation, experiment and report section.
+
 ## How it works
 
 **The gateway routes.** Round robin takes turns; least outstanding chooses a healthy worker with fewer assigned, unfinished requests. The gateway also checks client limits and streams token events back to the client.

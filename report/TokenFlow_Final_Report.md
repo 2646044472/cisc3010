@@ -16,14 +16,14 @@ The implementation adds gateway accounting, worker lifecycle, iteration scheduli
 
 ### Related work and scope
 
-Orca [1] motivates admitting requests at iteration boundaries and batching selected operations. Sarathi-Serve [5] motivates bounding prompt work alongside decode. TokenFlow adapts these ideas to full CPU replicas. DistServe [6] motivates distinguishing first-token delay from streaming delay; phase disaggregation itself is outside this implementation.
+Orca [1] motivates admitting requests at iteration boundaries and batching selected operations. Sarathi-Serve [5] motivates bounding prompt work alongside decode. TokenFlow adapts these ideas to full CPU replicas. DistServe [6] motivates distinguishing first-token delay from streaming delay; phase disaggregation itself is outside this implementation. Orca schedules work at each generation iteration; the routing experiment instead chooses a worker once per request. It does not test Orca against round robin.
 
 <!-- REGION p1-right -->
-![**Figure 1. Process architecture.** The gateway routes complete requests to two independent Qwen workers, each with its own queue and KV state. All processes share one CPU host.](assets/architecture.svg)
+![**Figure 1. Process architecture.** The gateway sends HTTP generation requests; workers stream token events back. Each worker owns a model, queue and KV state. All three processes share one CPU host.](assets/architecture.svg)
 
 ## 2  System overview
 
-The gateway enforces local client limits (HTTP 429 with a retry hint), atomically selects a healthy worker using round robin (RR) or least outstanding (LO), and relays streamed tokens. LO counts assigned requests that are queued or running; terminal outcomes release counts. Each worker owns a FIFO queue, four active slots and request-local KV state. Continuous admission fills freed slots at iteration boundaries. Selective execution then shares compatible token-wise operations while keeping Attention separate (Figure 3). Client labels are a demo mechanism, rather than production authentication. The backend uses Qwen [2], PyTorch and Transformers [3, 4].
+The gateway enforces local client limits (HTTP 429 with a retry hint), atomically selects a healthy worker using round robin (RR) or least outstanding (LO), and relays worker NDJSON token events as client SSE streams. LO counts assigned requests that are queued or running; terminal outcomes release counts. Each worker owns a FIFO queue, four active slots and request-local KV state. Continuous admission fills freed slots at iteration boundaries. Selective execution then shares compatible token-wise operations while keeping Attention separate (Figure 3). Client labels are a demo mechanism, rather than production authentication. The backend uses Qwen [2], PyTorch and Transformers [3, 4].
 
 <!-- REGION p2-top -->
 ## 3  Controlled routing evaluation

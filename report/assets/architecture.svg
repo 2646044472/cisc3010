@@ -19,7 +19,7 @@
 			<text x="70.0507" y="96.5" style="font-family: Helvetica; font-size: 6.7px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,193) scale(1,-1)">Admission  |  RR / LO  |  streaming</text>
 			<path d="M 121.5,155 L 121.5,123 Z" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.8;"/>
 			<polygon points="121.5 123, 123.4177 126.5103, 119.5823 126.5103" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(23%,43%,62%); fill-rule: evenodd;"/>
-			<text x="128.5" y="148" style="font-family: Helvetica; font-size: 6.3px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,296) scale(1,-1)">HTTP</text>
+			<text x="128.5" y="148" style="font-family: Helvetica; font-size: 6.3px;fill: rgb(32%,37%,42%); stroke:none;" transform="translate(0,296) scale(1,-1)">HTTP / SSE</text>
 			<path d="M 121.5,88 L 121.5,76 Z" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.65;"/>
 			<path d="M 58,76 L 185,76 Z" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.65;"/>
 			<path d="M 58.5,76 L 58.5,67 Z" style="stroke: rgb(23%,43%,62%); stroke-linecap: butt; stroke-width: 0.8;"/>

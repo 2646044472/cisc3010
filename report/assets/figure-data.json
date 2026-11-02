@@ -4494,7 +4494,7 @@
     }
   ],
   "plot_convention": {
-    "routing": "Open circles are trials (horizontal jitter only); gray lines pair repeats. Diamonds and whiskers are mean +/- sample SD.",
+    "routing": "Two columns separate arrival rates; three rows separate metrics. Solid points are means, horizontal whiskers are sample SD, and numeric labels are means. Raw trials are retained here, not overplotted.",
     "execution_and_simulator": "Zero-based horizontal bars show means; whiskers show sample SD; open circles show individual trials (vertical jitter only)."
   }
 }
