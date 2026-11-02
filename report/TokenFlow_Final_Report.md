@@ -28,7 +28,7 @@ The gateway enforces local client limits (HTTP 429 with a retry hint), atomicall
 <!-- REGION p2-top -->
 ## 3  Controlled routing evaluation
 
-![**Figure 2. Routing on real Qwen.** Six paired trials per policy and arrival rate; 120 requests/trial. Circles: trials; gray lines: pairs; diamonds and whiskers: mean ± sample SD. Horizontal jitter separates points. P95 is computed per trial; axes differ by load. RR: round robin; LO: least outstanding.](assets/routing.svg)
+![**Figure 2. Routing on real Qwen.** Points and whiskers show mean ± sample SD across six trials per policy and arrival rate (120 requests/trial). Values at right are means. P95 is computed within each trial; latency scales differ by load. RR: round robin; LO: least outstanding.](assets/routing.svg)
 
 <!-- REGION p2-left -->
 ### 3.1  Experimental setup

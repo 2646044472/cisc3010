@@ -115,55 +115,42 @@ def suite(archive,path):
     with zipfile.ZipFile(archive) as z:return json.loads(z.read(path))
 
 
-def metric_panel(d,x,y,w,h,groups,title,ylabel,ymax,ticks,labels,palette,fmt='.2f',paired=False,show_values=True):
-    """Points are trials; heavy marks and whiskers are mean +/- sample SD."""
-    left,right,bottom,top=x+30,x+w-9,y+25,y+h-25
-    text(d,x+w/2,y+h-8,title,8.6,font='Helvetica-Bold',anchor='middle')
-    text(d,left,top+5,ylabel,7,MUTED)
-    for t in ticks:
-        yy=bottom+(top-bottom)*t/ymax
-        line(d,left,yy,right,yy,RULE,.35)
-        text(d,left-5,yy-2.2,f'{t:g}',7.1,MUTED,anchor='end')
-    line(d,left,bottom,left,top,MUTED,.6);line(d,left,bottom,right,bottom,MUTED,.6)
-    xs=[left+(i+.5)*(right-left)/len(groups) for i in range(len(groups))]
-    if paired and len(groups)==2:
-        for j,(a,b) in enumerate(zip(groups[0],groups[1])):
-            offset=(j-(len(groups[0])-1)/2)*1.7
-            line(d,xs[0]-5+offset,bottom+(top-bottom)*a/ymax,xs[1]-5+offset,
-                 bottom+(top-bottom)*b/ymax,colors.HexColor('#c7ced7'),.55)
-    for i,values in enumerate(groups):
-        mean=stats.mean(values);sd=stats.stdev(values) if len(values)>1 else 0;xx=xs[i]
-        for j,value in enumerate(values):
-            jitter=(j-(len(values)-1)/2)*1.7
-            d.add(Circle(xx-5+jitter,bottom+(top-bottom)*value/ymax,2.1,
-                         fillColor=WHITE,strokeColor=palette[i],strokeWidth=.9))
-        yy=bottom+(top-bottom)*mean/ymax
-        lo=bottom+(top-bottom)*(mean-sd)/ymax;hi=bottom+(top-bottom)*(mean+sd)/ymax
-        line(d,xx+9,lo,xx+9,hi,palette[i],1.1)
-        line(d,xx+6,lo,xx+12,lo,palette[i],1);line(d,xx+6,hi,xx+12,hi,palette[i],1)
-        d.add(Polygon([xx+9,yy+2.8,xx+11.8,yy,xx+9,yy-2.8,xx+6.2,yy],fillColor=palette[i],strokeColor=None))
-        text(d,xx,bottom-12,labels[i],7.4,MUTED,anchor='middle')
-        if show_values:
-            label_y=min(top+4,max(hi,bottom+(top-bottom)*max(values)/ymax)+7)
-            text(d,xx,label_y,format(mean,fmt),7,palette[i],font='Helvetica-Bold',anchor='middle')
-
-
 def routing_figure(rows):
+    """Uncluttered means and sample SD, separated by policy and load."""
     d=Drawing(FULL,280)
-    specs=[('requests_s','Throughput','requests/s',[[0,.5,1,1.5],[0,.5,1,1.5]],1.6,'.3f'),
-           ('ttft_p95_ms','P95 first token','seconds',[[0,2,4,6],[0,20,40,60]],None,'.2f'),
-           ('latency_p95_ms','P95 completion','seconds',[[0,5,10,15],[0,20,40,60]],None,'.2f')]
-    for r,rate in enumerate([1.,3.]):
-        y=138 if r==0 else 0
-        text(d,0,y+132,f'({"a" if r==0 else "b"})  {int(rate)} request{"s" if rate>1 else ""}/s',8.7,INK,'Helvetica-Bold')
-        line(d,116,y+135,FULL,y+135,RULE,.5)
-        for j,(metric,title,unit,ticks,ymax,fmt) in enumerate(specs):
-            groups=[]
-            for policy in ['round_robin','least_outstanding']:
-                selected=sorted([q for q in rows if q['rate']==rate and q['routing']==policy],key=lambda q:q['repeat'])
-                groups.append([q[metric]/(1000 if metric.endswith('_ms') else 1) for q in selected])
-            maxy=ymax or (6.5 if r==0 and j==1 else 17 if r==0 else 65)
-            metric_panel(d,j*FULL/3,y,FULL/3-4,119,groups,title,unit,maxy,ticks[r],['RR','LO'],[BLUE,AMBER],fmt,True,False)
+    gap=34
+    width=(FULL-gap)/2
+    for col,rate in enumerate([1.,3.]):
+        x=col*(width+gap)
+        text(d,x,270,f'{int(rate)} request{"s" if rate>1 else ""}/s',9.4,INK,'Helvetica-Bold')
+        line(d,x,260,x+width,260,RULE,.6)
+    specs=[('requests_s','Throughput (requests/s)',[1.6,1.6],[[0,.5,1,1.5],[0,.5,1,1.5]],'.3f'),
+           ('ttft_p95_ms','P95 first token (seconds)',[7,65],[[0,2,4,6],[0,20,40,60]],'.2f'),
+           ('latency_p95_ms','P95 completion (seconds)',[18,65],[[0,5,10,15],[0,20,40,60]],'.2f')]
+    for row,(metric,title,limits,ticks,fmt) in enumerate(specs):
+        y=195-row*83
+        for col,rate in enumerate([1.,3.]):
+            x=col*(width+gap)
+            left,right=x+25,x+width-39
+            text(d,x,y+53,title,8.4,INK,'Helvetica-Bold')
+            for tick in ticks[col]:
+                xx=left+(right-left)*tick/limits[col]
+                line(d,xx,y+3,xx,y+40,RULE,.4)
+                text(d,xx,y-8,f'{tick:g}',7,MUTED,anchor='middle')
+            line(d,left,y+3,right,y+3,MUTED,.6)
+            for i,(policy,label,color) in enumerate([('round_robin','RR',BLUE),('least_outstanding','LO',AMBER)]):
+                values=[q[metric]/(1000 if metric.endswith('_ms') else 1)
+                        for q in rows if q['rate']==rate and q['routing']==policy]
+                mean,sd=stats.mean(values),stats.stdev(values)
+                yy=y+33-i*21
+                pos=lambda v:left+(right-left)*v/limits[col]
+                lo,hi=pos(mean-sd),pos(mean+sd)
+                text(d,x,yy-2.6,label,7.5,MUTED)
+                line(d,lo,yy,hi,yy,color,1.35)
+                line(d,lo,yy-3,lo,yy+3,color,1)
+                line(d,hi,yy-3,hi,yy+3,color,1)
+                d.add(Circle(pos(mean),yy,2.7,fillColor=color,strokeColor=WHITE,strokeWidth=.6))
+                text(d,x+width,yy-2.6,format(mean,fmt),8,color,'Helvetica-Bold',anchor='end')
     return d
 
 
