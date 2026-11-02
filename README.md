@@ -4,6 +4,8 @@
 
 CHEONG KIN NGAI (Bankey) · CISC3010 · Topic 14
 
+This is the GitHub repository for the TokenFlow course project: [github.com/2646044472/cisc3010](https://github.com/2646044472/cisc3010). It contains the source code, final report, demo and experimental evidence. If you are reading an extracted ZIP, the same project is available online at this link.
+
 TokenFlow is a local inference service with an HTTP gateway and two independent Qwen2.5-0.5B-Instruct worker processes. It makes routing, queueing, incremental generation and worker failure observable, and evaluates their effects through controlled experiments on a shared CPU host.
 
 **[Read the report](report.pdf)** · **[Watch the demo](code/demo/TokenFlow_Demo.mp4)** · **[Code and setup](code/README.md)** · **[Experimental evidence](code/evidence/README.md)**
