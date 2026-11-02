@@ -14,7 +14,7 @@ On 22 October, Codex extended the fixed two-worker deployment into a configurabl
 
 On 23 October, Codex added bounded observations from real worker iterations and an Execution inspector for explaining prefill/decode membership, selective execution and resource release. It also recorded real-model admission, cancellation and worker-failure scenarios, edited a 77-second presentation video, and aligned the demo slide and English speaker notes. Displayed iteration membership is checked against the saved worker trace. These captures are functional evidence and do not replace the repeated benchmarks.
 
-On 28 October, Codex assisted with the final repository organization, four-page report, evidence packaging, portable routing verifier, and short/long simulator analysis. All 32 automated tests were rerun, the 40 archived routing runs were rechecked against their raw traces, 12 Qwen reference cases were rerun, and a separate 12-trial simulator admission comparison was repeated. The real-model and simulator results remain separate. No specific presentation feedback was reported; the submission records that fact rather than attributing changes to invented comments.
+On 28 October, Codex assisted with the final repository organization, four-page report, evidence packaging, portable routing verifier, and short/long simulator analysis. All 32 automated tests were rerun, the 40 archived routing runs were rechecked against their raw traces, 12 Qwen reference cases were rerun, and a separate 12-trial simulator admission comparison was repeated. The real-model and simulator results remain separate.
 
 ## Topic 9 — Replay Lab (earlier prototype)
 

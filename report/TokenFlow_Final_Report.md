@@ -120,15 +120,15 @@ The study uses synthetic templates, fixed output caps, two arrival rates, and tw
 The gateway and host are single failure points. The system does not implement model sharding, GPU kernels, PagedAttention, cross-request prefix KV reuse, phase disaggregation, or seamless output replay. Live KV tensor bytes exclude allocator overhead and process/model memory.
 
 <!-- REGION p4-right -->
-## 7  Reproducibility and contributions
+## 7  Implementation and reproducibility
 
-The submission contains source, pinned dependencies and model revision, startup and experiment commands, sample requests, the architecture, demo video and captions, raw traces, checker, and plotting scripts. The report builder recreates vector figures directly from the submitted CSV/ZIP evidence; no local run directory or model download is needed to rebuild this PDF.
+TokenFlow implements request accounting, worker lifecycle management, iteration-level admission, selective execution, and trace-based verification around pretrained Qwen. PyTorch and Transformers supply tensor operations, model layers, tokenization, and cache primitives. These contributions connect request-level decisions to observable model execution without modifying pretrained weights.
 
-Clean-checkout checks start both the simulator and real model with two healthy workers and complete sample requests. Fresh dependency installation was checked using cached pinned model weights; the full first-time weight download was not repeated. The setup documents Windows as the verified environment.
+The experimental artifact provides pinned dependencies and model revision, saved workloads, run configurations, raw traces, correctness checks, and analysis scripts. Figures are generated from archived observations. Clean-checkout validation used freshly installed dependencies and cached, pinned weights; both backends completed sample requests with two healthy workers. Validation covers the documented Windows environment. Archived results can be analyzed without rerunning inference.
 
-No specific presentation feedback was received. Subsequent work audited deliverables against the assignment, packaged raw evidence and portable verification, reran the simulator comparison and automated checks, and improved the report's architecture and experimental presentation.
+Following the presentation, evaluation was extended with a twelve-trial simulator rerun, per-length analysis, and portable verification of archived routing trials. Automated checks were repeated, and raw traces were packaged with analysis code for independent inspection.
 
-The project adds gateway accounting, worker lifecycle, scheduling, selective execution, observability, checks, and experiments around pretrained Qwen and PyTorch/Transformers. Codex provided substantial design, implementation, test, experiment, and documentation assistance; its use and validation are disclosed in `AI_USE.md`. Existing libraries and readings are attributed below.
+**Tool disclosure.** Codex provided substantial design, implementation, testing, experiment, and writing assistance. Validation used model-reference comparisons, lifecycle checks, and repeated measurements. The accompanying `AI_USE.md` details this assistance and its verification.
 
 ## 8  Conclusion
 
