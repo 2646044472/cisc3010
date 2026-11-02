@@ -25,7 +25,7 @@ The default demo uses two worker processes on one computer. Each holds a full mo
 
 **Evidence and verification.** Logs and an independent checker track assignment, token order, completion and cleanup. The simulator has a documented timing model, and its results are labeled separately from real-model measurements.
 
-The [recording](demo/TokenFlow_Demo.mp4) shows actual local inference at recorded speed, including chat, routing, model execution, cancellation and recovery. It has [English captions](demo/TokenFlow_Demo.srt). The performance comparisons below use separate controlled experiments. The report also has an [editable source](report/TokenFlow_Final_Report.md); the [full service guide](docs/LLM_README.md) describes controls and logs.
+The [recording](demo/TokenFlow_Demo.mp4) shows actual local inference at recorded speed, including chat, routing, model execution, cancellation and recovery. It has [English captions](demo/TokenFlow_Demo.srt). The performance comparisons below use separate controlled experiments. The four-page report uses a two-column layout with five vector figures and a streaming-latency table; its [editable source](report/TokenFlow_Final_Report.md) and [figure sources](report/assets/README.md) are included. The [full service guide](docs/LLM_README.md) describes controls and logs.
 
 <details>
 <summary>Preview the service dashboard</summary>

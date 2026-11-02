@@ -1,0 +1,4497 @@
+{
+  "sources": {
+    "evidence/routing/raw-routing.zip": "de255da7e935d3cea98bdd33025b0b95484e1700228cb7c8d20b4adfb6c6b6e3",
+    "evidence/routing/paired-effects.csv": "cba75d5b7b392229dedfb98cb9d2698ace6c3dc2c02c1ae2f80483ac99815b45",
+    "evidence/additional/raw-additional-experiments.zip": "ed2f436a863a34a9939e72930d70011e775b189c92db5ceced80d1e2b2ae9693",
+    "evidence/additional/simulator-rerun-summary.csv": "a4d68bf6fa6c627387e98d2ae5568bd95f34884c8e0e463a62c9b0b1e836dda0"
+  },
+  "routing_trials": [
+    {
+      "run_id": "20261024T090420-751b4b5f",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 128.70077900000615,
+      "requests_s": 0.9323952887650685,
+      "tokens_s": 24.61523562339781,
+      "ttft_median_ms": 1262.4427500122692,
+      "ttft_p95_ms": 3686.7479099688335,
+      "latency_p95_ms": 14652.968095001415,
+      "inter_token_p95_ms": 705.7862049812687,
+      "inter_token_p99_ms": 930.447657990735,
+      "queue_p95_ms": 3015.1070049934765,
+      "dispatch_lateness_p95_ms": 13.898930017603561,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 4249.73520002095,
+          "latency_p95_ms": 7777.925400005188
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 3531.4281300175935,
+          "latency_p95_ms": 16356.433090020437
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 4,
+          "active_slot_saturation_fraction": 0.332,
+          "mean_active": 2.634
+        },
+        "worker-2": {
+          "max_queue": 2,
+          "active_slot_saturation_fraction": 0.482,
+          "mean_active": 2.96
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261024T090631-f0e4d340",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 122.9879135999945,
+      "requests_s": 0.9757056322647087,
+      "tokens_s": 25.75862869178831,
+      "ttft_median_ms": 756.939249986317,
+      "ttft_p95_ms": 2462.119495004299,
+      "latency_p95_ms": 11989.793515007475,
+      "inter_token_p95_ms": 602.5299549975898,
+      "inter_token_p99_ms": 875.5676559865288,
+      "queue_p95_ms": 467.3337399784941,
+      "dispatch_lateness_p95_ms": 11.63174002431333,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 1173.4045000048354,
+          "latency_p95_ms": 5556.08690000372
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 2973.8954799948265,
+          "latency_p95_ms": 14108.001500030516
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.22384937238493724,
+          "mean_active": 2.717573221757322
+        },
+        "worker-2": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.24476987447698745,
+          "mean_active": 2.6757322175732217
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261024T090835-b5e54ab5",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 124.28481069998816,
+      "requests_s": 0.9655242609627391,
+      "tokens_s": 25.489840489416313,
+      "ttft_median_ms": 684.615450038109,
+      "ttft_p95_ms": 2920.818270050222,
+      "latency_p95_ms": 13413.38168498769,
+      "inter_token_p95_ms": 567.2194300190314,
+      "inter_token_p99_ms": 865.6218970223564,
+      "queue_p95_ms": 1292.7353649894935,
+      "dispatch_lateness_p95_ms": 15.66335995448753,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 1927.2983000264503,
+          "latency_p95_ms": 6258.600500004832
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 3331.653319986072,
+          "latency_p95_ms": 14188.88210997102
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.3076923076923077,
+          "mean_active": 2.6091476091476093
+        },
+        "worker-2": {
+          "max_queue": 2,
+          "active_slot_saturation_fraction": 0.316008316008316,
+          "mean_active": 2.455301455301455
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261024T091041-74765428",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 125.54645239998354,
+      "requests_s": 0.9558215123250726,
+      "tokens_s": 25.233687925381915,
+      "ttft_median_ms": 850.1033500360791,
+      "ttft_p95_ms": 5749.354044962092,
+      "latency_p95_ms": 15100.237884960368,
+      "inter_token_p95_ms": 636.748945029107,
+      "inter_token_p99_ms": 894.2662780091632,
+      "queue_p95_ms": 4263.36602998781,
+      "dispatch_lateness_p95_ms": 11.507899992284365,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 4721.5890000225045,
+          "latency_p95_ms": 8098.450799996499
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 5898.431789985625,
+          "latency_p95_ms": 16184.49149000808
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.2727272727272727,
+          "mean_active": 2.603305785123967
+        },
+        "worker-2": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.4793388429752066,
+          "mean_active": 2.884297520661157
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261024T091247-7ce1389b",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 123.602858200029,
+      "requests_s": 0.9708513358631365,
+      "tokens_s": 25.630475266786807,
+      "ttft_median_ms": 707.8283499868121,
+      "ttft_p95_ms": 4424.631270012468,
+      "latency_p95_ms": 14544.250400026795,
+      "inter_token_p95_ms": 568.7668800150287,
+      "inter_token_p99_ms": 808.5684040153865,
+      "queue_p95_ms": 3377.589819958666,
+      "dispatch_lateness_p95_ms": 14.57166001200676,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 3940.141399973072,
+          "latency_p95_ms": 6982.488900015596
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 4866.271060000873,
+          "latency_p95_ms": 15063.036240014482
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 2,
+          "active_slot_saturation_fraction": 0.18867924528301888,
+          "mean_active": 2.3333333333333335
+        },
+        "worker-2": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.43186582809224316,
+          "mean_active": 2.742138364779874
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261024T091452-be136eb0",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 124.27798070001882,
+      "requests_s": 0.9655773237067234,
+      "tokens_s": 25.4912413458575,
+      "ttft_median_ms": 557.2429999883752,
+      "ttft_p95_ms": 2250.122439986444,
+      "latency_p95_ms": 10826.962985040152,
+      "inter_token_p95_ms": 484.76345003873575,
+      "inter_token_p99_ms": 771.9693840027323,
+      "queue_p95_ms": 477.38118500856206,
+      "dispatch_lateness_p95_ms": 17.949405036051758,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 1138.9232999645174,
+          "latency_p95_ms": 4904.739299963694
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 2511.9906399864703,
+          "latency_p95_ms": 12312.803969986271
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.12058212058212059,
+          "mean_active": 2.1933471933471935
+        },
+        "worker-2": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.17671517671517672,
+          "mean_active": 2.3409563409563408
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261024T091657-4c921163",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 123.71722449996741,
+      "requests_s": 0.9699538644275972,
+      "tokens_s": 25.606782020888566,
+      "ttft_median_ms": 609.8596999945585,
+      "ttft_p95_ms": 2262.2822549717966,
+      "latency_p95_ms": 11683.40349998034,
+      "inter_token_p95_ms": 507.3889849882111,
+      "inter_token_p99_ms": 777.4782509979566,
+      "queue_p95_ms": 584.3965199630471,
+      "dispatch_lateness_p95_ms": 11.077979969559237,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 1453.8859999738634,
+          "latency_p95_ms": 5097.212799999397
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 2592.9189699585554,
+          "latency_p95_ms": 13358.477619983023
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.14435146443514643,
+          "mean_active": 2.4560669456066946
+        },
+        "worker-2": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.23430962343096234,
+          "mean_active": 2.5606694560669454
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 4
+    },
+    {
+      "run_id": "20261024T091902-ef9a0279",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 123.11160249996465,
+      "requests_s": 0.9747253513334331,
+      "tokens_s": 25.732749275202632,
+      "ttft_median_ms": 579.5866499829572,
+      "ttft_p95_ms": 3440.8138500089985,
+      "latency_p95_ms": 12027.081584985715,
+      "inter_token_p95_ms": 474.6749450190691,
+      "inter_token_p99_ms": 746.1761660233608,
+      "queue_p95_ms": 2734.1004099929705,
+      "dispatch_lateness_p95_ms": 13.934334975783713,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 3433.4038000088185,
+          "latency_p95_ms": 6359.535499999765
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 2507.528899988394,
+          "latency_p95_ms": 14140.52501002443
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 4,
+          "active_slot_saturation_fraction": 0.18238993710691823,
+          "mean_active": 2.1551362683438153
+        },
+        "worker-2": {
+          "max_queue": 2,
+          "active_slot_saturation_fraction": 0.2662473794549266,
+          "mean_active": 2.49895178197065
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 4
+    },
+    {
+      "run_id": "20261024T092106-2513a1a4",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 123.21976250002626,
+      "requests_s": 0.9738697556731163,
+      "tokens_s": 25.710161549770273,
+      "ttft_median_ms": 555.6464999972377,
+      "ttft_p95_ms": 3113.328664997243,
+      "latency_p95_ms": 11665.95006501593,
+      "inter_token_p95_ms": 453.8485150114866,
+      "inter_token_p99_ms": 762.1893799782271,
+      "queue_p95_ms": 2285.239089990499,
+      "dispatch_lateness_p95_ms": 13.552005024394019,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 3107.799999997951,
+          "latency_p95_ms": 5900.360999978147
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 3050.2148200001106,
+          "latency_p95_ms": 12363.924070005305
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.1323529411764706,
+          "mean_active": 2.0840336134453783
+        },
+        "worker-2": {
+          "max_queue": 2,
+          "active_slot_saturation_fraction": 0.27310924369747897,
+          "mean_active": 2.392857142857143
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 5
+    },
+    {
+      "run_id": "20261024T092310-eb0ef77d",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 122.72416059998795,
+      "requests_s": 0.9778025729679489,
+      "tokens_s": 25.81398792635385,
+      "ttft_median_ms": 541.2673000246286,
+      "ttft_p95_ms": 2100.7816199969966,
+      "latency_p95_ms": 10460.188774968265,
+      "inter_token_p95_ms": 437.8491850133287,
+      "inter_token_p99_ms": 716.9716110103764,
+      "queue_p95_ms": 421.1280250339769,
+      "dispatch_lateness_p95_ms": 16.425690028700046,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 1001.118799962569,
+          "latency_p95_ms": 3784.4872000277974
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 2401.199430006091,
+          "latency_p95_ms": 10980.996030010285
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.09282700421940929,
+          "mean_active": 2.1624472573839664
+        },
+        "worker-2": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.08649789029535865,
+          "mean_active": 2.1666666666666665
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 5
+    },
+    {
+      "run_id": "20261024T092514-ca843a90",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 123.43113540002378,
+      "requests_s": 0.9722020267503501,
+      "tokens_s": 25.666133506209242,
+      "ttft_median_ms": 555.7157499715686,
+      "ttft_p95_ms": 2227.9405800480163,
+      "latency_p95_ms": 10824.425884959055,
+      "inter_token_p95_ms": 461.39373501937376,
+      "inter_token_p99_ms": 744.9342329963114,
+      "queue_p95_ms": 492.5565649551572,
+      "dispatch_lateness_p95_ms": 6.337730030645614,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 1182.299799984321,
+          "latency_p95_ms": 4388.5865999618545
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 2329.8077199899126,
+          "latency_p95_ms": 11670.944950007834
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.12552301255230125,
+          "mean_active": 2.2635983263598325
+        },
+        "worker-2": {
+          "max_queue": 1,
+          "active_slot_saturation_fraction": 0.14644351464435146,
+          "mean_active": 2.211297071129707
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 6
+    },
+    {
+      "run_id": "20261024T092718-8bfd0ae0",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 1.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 122.7882778000203,
+      "requests_s": 0.9772919870693078,
+      "tokens_s": 25.800508458629725,
+      "ttft_median_ms": 546.7381000053138,
+      "ttft_p95_ms": 1928.2784650014944,
+      "latency_p95_ms": 10775.239064995549,
+      "inter_token_p95_ms": 441.88835499517154,
+      "inter_token_p99_ms": 696.6299440152943,
+      "queue_p95_ms": 1218.127670011017,
+      "dispatch_lateness_p95_ms": 13.67000002937857,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 1811.5749999997206,
+          "latency_p95_ms": 4021.4636000455357
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 1930.5537300009746,
+          "latency_p95_ms": 11408.719029970234
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 2,
+          "active_slot_saturation_fraction": 0.12631578947368421,
+          "mean_active": 2.037894736842105
+        },
+        "worker-2": {
+          "max_queue": 2,
+          "active_slot_saturation_fraction": 0.1957894736842105,
+          "mean_active": 2.2778947368421054
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 6
+    },
+    {
+      "run_id": "20261024T092922-59b19c04",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 89.96800500003155,
+      "requests_s": 1.333807501899791,
+      "tokens_s": 35.212518050154486,
+      "ttft_median_ms": 19967.424200003734,
+      "ttft_p95_ms": 42900.871665004524,
+      "latency_p95_ms": 49881.49759499356,
+      "inter_token_p95_ms": 662.4264650192345,
+      "inter_token_p99_ms": 755.849386996706,
+      "queue_p95_ms": 41301.100000026054,
+      "dispatch_lateness_p95_ms": 13.886696703654122,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 40694.00040002074,
+          "latency_p95_ms": 43992.62889998499
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 43999.60442999145,
+          "latency_p95_ms": 51221.909139998024
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 32,
+          "active_slot_saturation_fraction": 0.896551724137931,
+          "mean_active": 3.6695402298850577
+        },
+        "worker-2": {
+          "max_queue": 28,
+          "active_slot_saturation_fraction": 0.9568965517241379,
+          "mean_active": 3.9051724137931036
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261024T093053-7bef47a5",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 89.87041209999006,
+      "requests_s": 1.3352559223439153,
+      "tokens_s": 35.25075634987937,
+      "ttft_median_ms": 20747.94760000077,
+      "ttft_p95_ms": 42317.72665998724,
+      "latency_p95_ms": 49003.09324002301,
+      "inter_token_p95_ms": 652.0810950081797,
+      "inter_token_p99_ms": 737.3175299778813,
+      "queue_p95_ms": 41759.593255035,
+      "dispatch_lateness_p95_ms": 14.648693304236149,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 42315.13539998559,
+          "latency_p95_ms": 45524.12880002521
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 42061.33677999023,
+          "latency_p95_ms": 49296.3621999952
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 30,
+          "active_slot_saturation_fraction": 0.9022988505747126,
+          "mean_active": 3.6954022988505746
+        },
+        "worker-2": {
+          "max_queue": 30,
+          "active_slot_saturation_fraction": 0.9511494252873564,
+          "mean_active": 3.8850574712643677
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261024T093224-371b5fe9",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 90.62950190005358,
+      "requests_s": 1.3240721562426356,
+      "tokens_s": 34.95550492480558,
+      "ttft_median_ms": 18602.14000000269,
+      "ttft_p95_ms": 42494.32340002386,
+      "latency_p95_ms": 49380.90556996758,
+      "inter_token_p95_ms": 648.7271550053265,
+      "inter_token_p99_ms": 759.2145339923447,
+      "queue_p95_ms": 40996.68852002359,
+      "dispatch_lateness_p95_ms": 16.477045026840642,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 43270.349900005385,
+          "latency_p95_ms": 45414.40159996273
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 42386.8074500293,
+          "latency_p95_ms": 49876.97701000725
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 29,
+          "active_slot_saturation_fraction": 0.8971428571428571,
+          "mean_active": 3.6742857142857144
+        },
+        "worker-2": {
+          "max_queue": 30,
+          "active_slot_saturation_fraction": 0.9457142857142857,
+          "mean_active": 3.874285714285714
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261024T093355-4e8f97ea",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 90.64087279996602,
+      "requests_s": 1.3239060513552887,
+      "tokens_s": 34.95111975577962,
+      "ttft_median_ms": 20428.622349980287,
+      "ttft_p95_ms": 42899.69754998747,
+      "latency_p95_ms": 50015.51832500845,
+      "inter_token_p95_ms": 655.1927349733887,
+      "inter_token_p99_ms": 745.1196049986174,
+      "queue_p95_ms": 41296.46990499168,
+      "dispatch_lateness_p95_ms": 10.773219977272674,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 40879.9219999928,
+          "latency_p95_ms": 44113.724199996796
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 44131.90813002293,
+          "latency_p95_ms": 51884.53486999497
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 32,
+          "active_slot_saturation_fraction": 0.88,
+          "mean_active": 3.645714285714286
+        },
+        "worker-2": {
+          "max_queue": 28,
+          "active_slot_saturation_fraction": 0.9571428571428572,
+          "mean_active": 3.9085714285714284
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261024T093526-065bccc8",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 91.77181339997333,
+      "requests_s": 1.3075910299058653,
+      "tokens_s": 34.52040318951484,
+      "ttft_median_ms": 20344.21895002015,
+      "ttft_p95_ms": 44477.65980500553,
+      "latency_p95_ms": 51417.35913499724,
+      "inter_token_p95_ms": 681.7324349947739,
+      "inter_token_p99_ms": 785.9074419841636,
+      "queue_p95_ms": 42791.810675000306,
+      "dispatch_lateness_p95_ms": 15.986860010891577,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 42025.1230999711,
+          "latency_p95_ms": 45706.28859999124
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 44967.39027999574,
+          "latency_p95_ms": 53039.2784799682
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 33,
+          "active_slot_saturation_fraction": 0.895774647887324,
+          "mean_active": 3.684507042253521
+        },
+        "worker-2": {
+          "max_queue": 28,
+          "active_slot_saturation_fraction": 0.9605633802816902,
+          "mean_active": 3.9126760563380283
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261024T093659-90823dcf",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 96.97517400002107,
+      "requests_s": 1.2374301076270708,
+      "tokens_s": 32.66815484135467,
+      "ttft_median_ms": 22315.931800025282,
+      "ttft_p95_ms": 48987.970824993674,
+      "latency_p95_ms": 56273.74885502213,
+      "inter_token_p95_ms": 707.2654850227992,
+      "inter_token_p99_ms": 785.6079299707199,
+      "queue_p95_ms": 47338.97715999628,
+      "dispatch_lateness_p95_ms": 15.731080027763866,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 47060.311699984595,
+          "latency_p95_ms": 50932.44949996006
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 50686.55571997515,
+          "latency_p95_ms": 57351.632799964864
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 31,
+          "active_slot_saturation_fraction": 0.8529411764705882,
+          "mean_active": 3.513368983957219
+        },
+        "worker-2": {
+          "max_queue": 32,
+          "active_slot_saturation_fraction": 0.9545454545454546,
+          "mean_active": 3.906417112299465
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261024T093837-a4ed60d0",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 94.05013180000242,
+      "requests_s": 1.275915277345703,
+      "tokens_s": 33.684163321926555,
+      "ttft_median_ms": 20453.46720001544,
+      "ttft_p95_ms": 46197.0321300294,
+      "latency_p95_ms": 52825.127880004584,
+      "inter_token_p95_ms": 667.7740250044735,
+      "inter_token_p99_ms": 774.1907600098057,
+      "queue_p95_ms": 44450.84628000913,
+      "dispatch_lateness_p95_ms": 14.594368321314375,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 41273.22099998128,
+          "latency_p95_ms": 45006.75760000013
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 46495.442630024634,
+          "latency_p95_ms": 54077.960929996334
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 30,
+          "active_slot_saturation_fraction": 0.8429752066115702,
+          "mean_active": 3.509641873278237
+        },
+        "worker-2": {
+          "max_queue": 31,
+          "active_slot_saturation_fraction": 0.9641873278236914,
+          "mean_active": 3.9173553719008263
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 4
+    },
+    {
+      "run_id": "20261024T094012-0ba45e40",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 92.0838016999769,
+      "requests_s": 1.3031607925026634,
+      "tokens_s": 34.403444922070314,
+      "ttft_median_ms": 20038.966350024566,
+      "ttft_p95_ms": 44429.9100250355,
+      "latency_p95_ms": 51658.85034502135,
+      "inter_token_p95_ms": 679.1972499864642,
+      "inter_token_p99_ms": 784.2916129872905,
+      "queue_p95_ms": 42757.89005497354,
+      "dispatch_lateness_p95_ms": 15.499894990351846,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 42291.12060001353,
+          "latency_p95_ms": 45679.788500012364
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 45749.18912996072,
+          "latency_p95_ms": 53184.80933995452
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 32,
+          "active_slot_saturation_fraction": 0.8848314606741573,
+          "mean_active": 3.6601123595505616
+        },
+        "worker-2": {
+          "max_queue": 28,
+          "active_slot_saturation_fraction": 0.9578651685393258,
+          "mean_active": 3.9101123595505616
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 4
+    },
+    {
+      "run_id": "20261024T094145-443cdc4f",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 90.75992749998113,
+      "requests_s": 1.3221694122664978,
+      "tokens_s": 34.90527248383554,
+      "ttft_median_ms": 19515.594349999446,
+      "ttft_p95_ms": 43622.8111799981,
+      "latency_p95_ms": 50579.837215016596,
+      "inter_token_p95_ms": 662.6589599851286,
+      "inter_token_p99_ms": 740.541527022142,
+      "queue_p95_ms": 42010.76341001026,
+      "dispatch_lateness_p95_ms": 14.471966628722654,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 41294.58839999279,
+          "latency_p95_ms": 44765.49809996504
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 44599.08373002545,
+          "latency_p95_ms": 51910.29558998416
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 33,
+          "active_slot_saturation_fraction": 0.8971428571428571,
+          "mean_active": 3.682857142857143
+        },
+        "worker-2": {
+          "max_queue": 28,
+          "active_slot_saturation_fraction": 0.9571428571428572,
+          "mean_active": 3.9085714285714284
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 5
+    },
+    {
+      "run_id": "20261024T094317-f9beff58",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 95.50865900004283,
+      "requests_s": 1.2564305818590353,
+      "tokens_s": 33.169767361078534,
+      "ttft_median_ms": 19474.84079998685,
+      "ttft_p95_ms": 46253.05677498109,
+      "latency_p95_ms": 54167.14231499063,
+      "inter_token_p95_ms": 652.9279000096722,
+      "inter_token_p99_ms": 771.9259299896659,
+      "queue_p95_ms": 44688.903064996695,
+      "dispatch_lateness_p95_ms": 12.716578385635202,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 42072.24040001165,
+          "latency_p95_ms": 45926.28650000552
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 48613.19667999633,
+          "latency_p95_ms": 56178.650620003464
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 29,
+          "active_slot_saturation_fraction": 0.8075880758807588,
+          "mean_active": 3.3604336043360434
+        },
+        "worker-2": {
+          "max_queue": 30,
+          "active_slot_saturation_fraction": 0.948509485094851,
+          "mean_active": 3.899728997289973
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 5
+    },
+    {
+      "run_id": "20261024T094453-078eca3b",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 101.44329880003352,
+      "requests_s": 1.1829268312394465,
+      "tokens_s": 31.22926834472139,
+      "ttft_median_ms": 20337.66079999623,
+      "ttft_p95_ms": 47889.399310026776,
+      "latency_p95_ms": 58394.053579986205,
+      "inter_token_p95_ms": 682.148679997772,
+      "inter_token_p99_ms": 850.1168480055642,
+      "queue_p95_ms": 45857.09269499638,
+      "dispatch_lateness_p95_ms": 14.586980029707775,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 45369.057499978226,
+          "latency_p95_ms": 48020.70079999976
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 51952.544970001334,
+          "latency_p95_ms": 60468.534849985735
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 30,
+          "active_slot_saturation_fraction": 0.8209718670076727,
+          "mean_active": 3.370843989769821
+        },
+        "worker-2": {
+          "max_queue": 30,
+          "active_slot_saturation_fraction": 0.9437340153452686,
+          "mean_active": 3.8823529411764706
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 6
+    },
+    {
+      "run_id": "20261024T094635-6b9bc2bc",
+      "scenario": "routing",
+      "backend": "cpu-model",
+      "worker_count": 2,
+      "routing": "round_robin",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 3.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 120,
+      "successes": 120,
+      "elapsed_s": 102.40040610003052,
+      "requests_s": 1.1718703525724028,
+      "tokens_s": 30.937377307911436,
+      "ttft_median_ms": 26607.80599998543,
+      "ttft_p95_ms": 54317.47892004205,
+      "latency_p95_ms": 62233.380224974826,
+      "inter_token_p95_ms": 752.9431449918775,
+      "inter_token_p99_ms": 858.0228519928643,
+      "queue_p95_ms": 52629.39191501646,
+      "dispatch_lateness_p95_ms": 12.910451676967048,
+      "outcomes": {
+        "completed": 120
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 120,
+        "outcomes": {
+          "completed": 120
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 81,
+          "ttft_p95_ms": 52198.52780003566,
+          "latency_p95_ms": 55640.74190001702
+        },
+        "long": {
+          "count": 39,
+          "ttft_p95_ms": 55851.31686999812,
+          "latency_p95_ms": 63611.68213998899
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 33,
+          "active_slot_saturation_fraction": 0.8987341772151899,
+          "mean_active": 3.6911392405063292
+        },
+        "worker-2": {
+          "max_queue": 32,
+          "active_slot_saturation_fraction": 0.9670886075949368,
+          "mean_active": 3.9316455696202532
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 120
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 6
+    }
+  ],
+  "execution_trials": [
+    {
+      "run_id": "20261020T030818-752af6d8",
+      "scenario": "batching",
+      "backend": "cpu-model",
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "sequential",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 24,
+      "successes": 24,
+      "elapsed_s": 30.26619650000066,
+      "requests_s": 0.7929638598625856,
+      "tokens_s": 19.031132636702054,
+      "ttft_median_ms": 7002.030349998677,
+      "ttft_p95_ms": 18964.345124999814,
+      "latency_p95_ms": 26357.92619000058,
+      "inter_token_p95_ms": 991.4916900044773,
+      "queue_p95_ms": 17171.463119997497,
+      "dispatch_lateness_p95_ms": 13.008309990254904,
+      "outcomes": {
+        "completed": 24
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 24,
+        "outcomes": {
+          "completed": 24
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 18,
+          "ttft_p95_ms": 18122.191574993485,
+          "latency_p95_ms": 23300.14711499607
+        },
+        "long": {
+          "count": 6,
+          "ttft_p95_ms": 18396.612724991428,
+          "latency_p95_ms": 26534.526799994637
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.85,
+          "mean_active": 3.6333333333333333
+        },
+        "worker-2": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.8166666666666667,
+          "mean_active": 3.566666666666667
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 24
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261020T030850-1809937f",
+      "scenario": "batching",
+      "backend": "cpu-model",
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 24,
+      "successes": 24,
+      "elapsed_s": 20.924048799992306,
+      "requests_s": 1.1470055451222627,
+      "tokens_s": 27.528133082934303,
+      "ttft_median_ms": 4545.604599996295,
+      "ttft_p95_ms": 11978.04699999542,
+      "latency_p95_ms": 17243.133705001674,
+      "inter_token_p95_ms": 871.6755199980979,
+      "queue_p95_ms": 10750.77660500974,
+      "dispatch_lateness_p95_ms": 13.590086656283082,
+      "outcomes": {
+        "completed": 24
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 24,
+        "outcomes": {
+          "completed": 24
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 18,
+          "ttft_p95_ms": 11546.774200005166,
+          "latency_p95_ms": 14317.985070002032
+        },
+        "long": {
+          "count": 6,
+          "ttft_p95_ms": 11574.38270000057,
+          "latency_p95_ms": 17296.008675002668
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 7,
+          "active_slot_saturation_fraction": 0.7926829268292683,
+          "mean_active": 3.475609756097561
+        },
+        "worker-2": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.7439024390243902,
+          "mean_active": 3.451219512195122
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 24
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261020T030912-20df0a66",
+      "scenario": "batching",
+      "backend": "cpu-model",
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 24,
+      "successes": 24,
+      "elapsed_s": 20.715780400001677,
+      "requests_s": 1.1585370928144256,
+      "tokens_s": 27.804890227546213,
+      "ttft_median_ms": 4642.377700001816,
+      "ttft_p95_ms": 11958.957784996162,
+      "latency_p95_ms": 17130.864465003833,
+      "inter_token_p95_ms": 871.1250350090266,
+      "queue_p95_ms": 10820.373969992941,
+      "dispatch_lateness_p95_ms": 15.593008322806277,
+      "outcomes": {
+        "completed": 24
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 24,
+        "outcomes": {
+          "completed": 24
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 18,
+          "ttft_p95_ms": 11649.955414987196,
+          "latency_p95_ms": 14166.20973500394
+        },
+        "long": {
+          "count": 6,
+          "ttft_p95_ms": 11560.679974998493,
+          "latency_p95_ms": 17231.930324996938
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 7,
+          "active_slot_saturation_fraction": 0.7777777777777778,
+          "mean_active": 3.432098765432099
+        },
+        "worker-2": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.7777777777777778,
+          "mean_active": 3.4814814814814814
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 24
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261020T030934-91c751e3",
+      "scenario": "batching",
+      "backend": "cpu-model",
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "sequential",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 24,
+      "successes": 24,
+      "elapsed_s": 30.412067500001285,
+      "requests_s": 0.7891604212702403,
+      "tokens_s": 18.939850110485768,
+      "ttft_median_ms": 7084.933999998611,
+      "ttft_p95_ms": 18979.0482299948,
+      "latency_p95_ms": 26362.413425005798,
+      "inter_token_p95_ms": 998.3055750002677,
+      "queue_p95_ms": 17305.23425000356,
+      "dispatch_lateness_p95_ms": 15.181493331814133,
+      "outcomes": {
+        "completed": 24
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 24,
+        "outcomes": {
+          "completed": 24
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 18,
+          "ttft_p95_ms": 18216.081969999505,
+          "latency_p95_ms": 23230.35443498884
+        },
+        "long": {
+          "count": 6,
+          "ttft_p95_ms": 18555.707849998726,
+          "latency_p95_ms": 26647.38057499926
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.8416666666666667,
+          "mean_active": 3.6083333333333334
+        },
+        "worker-2": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.8166666666666667,
+          "mean_active": 3.55
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 24
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261020T031005-09fe66d4",
+      "scenario": "batching",
+      "backend": "cpu-model",
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "sequential",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 24,
+      "successes": 24,
+      "elapsed_s": 30.850751200006926,
+      "requests_s": 0.7779389177400197,
+      "tokens_s": 18.67053402576047,
+      "ttft_median_ms": 7129.175699999905,
+      "ttft_p95_ms": 19594.075305009752,
+      "latency_p95_ms": 26891.183825009648,
+      "inter_token_p95_ms": 998.3761500028776,
+      "queue_p95_ms": 17857.51248499655,
+      "dispatch_lateness_p95_ms": 15.363240011356528,
+      "outcomes": {
+        "completed": 24
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 24,
+        "outcomes": {
+          "completed": 24
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 18,
+          "ttft_p95_ms": 18787.002395008312,
+          "latency_p95_ms": 23841.137550008716
+        },
+        "long": {
+          "count": 6,
+          "ttft_p95_ms": 19036.281149998104,
+          "latency_p95_ms": 27104.169125006592
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.8524590163934426,
+          "mean_active": 3.6311475409836067
+        },
+        "worker-2": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.819672131147541,
+          "mean_active": 3.5901639344262297
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 24
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261020T031037-06fbd0f3",
+      "scenario": "batching",
+      "backend": "cpu-model",
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 128,
+      "count": 24,
+      "successes": 24,
+      "elapsed_s": 20.756370300005074,
+      "requests_s": 1.1562715278785585,
+      "tokens_s": 27.750516669085403,
+      "ttft_median_ms": 4639.470649999566,
+      "ttft_p95_ms": 11994.50057500071,
+      "latency_p95_ms": 17072.687834998214,
+      "inter_token_p95_ms": 867.0213799989142,
+      "queue_p95_ms": 10800.678909996348,
+      "dispatch_lateness_p95_ms": 15.661101672109488,
+      "outcomes": {
+        "completed": 24
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 24,
+        "outcomes": {
+          "completed": 24
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 18,
+          "ttft_p95_ms": 11597.395454990328,
+          "latency_p95_ms": 14219.003030004387
+        },
+        "long": {
+          "count": 6,
+          "ttft_p95_ms": 11595.293900001707,
+          "latency_p95_ms": 17117.987475001428
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 7,
+          "active_slot_saturation_fraction": 0.7560975609756098,
+          "mean_active": 3.426829268292683
+        },
+        "worker-2": {
+          "max_queue": 8,
+          "active_slot_saturation_fraction": 0.7804878048780488,
+          "mean_active": 3.451219512195122
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 24
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    }
+  ],
+  "simulator_trials": [
+    {
+      "run_id": "20261028T033111-9506ed5c",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "static",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 17.049311299982946,
+      "requests_s": 2.8153629877148183,
+      "tokens_s": 118.24524548402236,
+      "ttft_median_ms": 3067.386950002401,
+      "ttft_p95_ms": 7467.288124997867,
+      "latency_p95_ms": 8632.473565018154,
+      "inter_token_p95_ms": 41.92237498937173,
+      "inter_token_p99_ms": 54.037146000191555,
+      "queue_p95_ms": 7303.722935002588,
+      "dispatch_lateness_p95_ms": 13.547001654903312,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 7542.899324995233,
+          "latency_p95_ms": 8043.202475004364
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 6910.374559996126,
+          "latency_p95_ms": 9131.340774998534
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 11,
+          "active_slot_saturation_fraction": 0.16666666666666666,
+          "mean_active": 1.6515151515151516
+        },
+        "worker-2": {
+          "max_queue": 12,
+          "active_slot_saturation_fraction": 0.22727272727272727,
+          "mean_active": 1.6515151515151516
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261028T033128-17568d6f",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 12.475139800022589,
+      "requests_s": 3.847652272394822,
+      "tokens_s": 161.60139544058254,
+      "ttft_median_ms": 381.577650012332,
+      "ttft_p95_ms": 1383.2340399967507,
+      "latency_p95_ms": 4808.440659985354,
+      "inter_token_p95_ms": 48.29690499609568,
+      "inter_token_p99_ms": 57.310321001859805,
+      "queue_p95_ms": 1114.5365949822008,
+      "dispatch_lateness_p95_ms": 14.64273501187563,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 1290.2679499893566,
+          "latency_p95_ms": 1767.894124990562
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 1377.5045200018212,
+          "latency_p95_ms": 4888.985019993561
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.40816326530612246,
+          "mean_active": 2.3469387755102042
+        },
+        "worker-2": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.42857142857142855,
+          "mean_active": 2.979591836734694
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261028T033141-48b420ea",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 12.22228799998993,
+      "requests_s": 3.927251591521943,
+      "tokens_s": 164.9445668439216,
+      "ttft_median_ms": 370.33694999990985,
+      "ttft_p95_ms": 1225.9182350026094,
+      "latency_p95_ms": 4599.8559550062055,
+      "inter_token_p95_ms": 48.07192499138181,
+      "inter_token_p99_ms": 56.5229200007161,
+      "queue_p95_ms": 1050.0697999945257,
+      "dispatch_lateness_p95_ms": 15.497298331077225,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 1220.3542749994085,
+          "latency_p95_ms": 1665.4595250147395
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 1237.1577650046675,
+          "latency_p95_ms": 4714.881884989154
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.4375,
+          "mean_active": 2.4791666666666665
+        },
+        "worker-2": {
+          "max_queue": 4,
+          "active_slot_saturation_fraction": 0.4375,
+          "mean_active": 2.9583333333333335
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261028T033154-0c9403ab",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "static",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 16.411079500016058,
+      "requests_s": 2.9248532980388666,
+      "tokens_s": 122.84383851763239,
+      "ttft_median_ms": 2646.843499998795,
+      "ttft_p95_ms": 6914.196890006132,
+      "latency_p95_ms": 8722.148159997596,
+      "inter_token_p95_ms": 39.91846498975063,
+      "inter_token_p99_ms": 60.93759500683518,
+      "queue_p95_ms": 6570.814489995245,
+      "dispatch_lateness_p95_ms": 14.60875667350309,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 6691.368925006827,
+          "latency_p95_ms": 7219.238225006848
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 6313.984630010963,
+          "latency_p95_ms": 9133.793750000768
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 9,
+          "active_slot_saturation_fraction": 0.15625,
+          "mean_active": 1.75
+        },
+        "worker-2": {
+          "max_queue": 11,
+          "active_slot_saturation_fraction": 0.1875,
+          "mean_active": 1.796875
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261028T033211-947b61e9",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "static",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 17.328678499994567,
+      "requests_s": 2.7699746405944947,
+      "tokens_s": 116.33893490496878,
+      "ttft_median_ms": 3137.417000005371,
+      "ttft_p95_ms": 7698.400335002225,
+      "latency_p95_ms": 9019.699154990667,
+      "inter_token_p95_ms": 44.219590011925874,
+      "inter_token_p99_ms": 56.488757999613874,
+      "queue_p95_ms": 7525.04104499385,
+      "dispatch_lateness_p95_ms": 16.326199976902235,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 7783.554699992237,
+          "latency_p95_ms": 8290.671299990208
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 7209.213580004871,
+          "latency_p95_ms": 9514.24929999921
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 11,
+          "active_slot_saturation_fraction": 0.16417910447761194,
+          "mean_active": 1.7014925373134329
+        },
+        "worker-2": {
+          "max_queue": 12,
+          "active_slot_saturation_fraction": 0.1791044776119403,
+          "mean_active": 1.537313432835821
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261028T033228-3d2abfa4",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 6.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 12.321200500009581,
+      "requests_s": 3.8957242843311146,
+      "tokens_s": 163.62041994190682,
+      "ttft_median_ms": 383.274949999759,
+      "ttft_p95_ms": 1261.3985200063325,
+      "latency_p95_ms": 4729.856154997833,
+      "inter_token_p95_ms": 46.87052500230492,
+      "inter_token_p99_ms": 56.233417994808406,
+      "queue_p95_ms": 1084.9537150148535,
+      "dispatch_lateness_p95_ms": 15.04263334112097,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 1231.3412500079721,
+          "latency_p95_ms": 1712.9896999977063
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 1298.8903450022917,
+          "latency_p95_ms": 4817.8412550129
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.4166666666666667,
+          "mean_active": 2.4375
+        },
+        "worker-2": {
+          "max_queue": 3,
+          "active_slot_saturation_fraction": 0.4375,
+          "mean_active": 3
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261028T033241-fe21ed94",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "static",
+      "execution": "selective",
+      "rate": 18.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 16.526841900020372,
+      "requests_s": 2.904366139058959,
+      "tokens_s": 121.98337784047628,
+      "ttft_median_ms": 4997.989349998534,
+      "ttft_p95_ms": 11267.45666499337,
+      "latency_p95_ms": 11834.609609998006,
+      "inter_token_p95_ms": 42.51131999481002,
+      "inter_token_p99_ms": 60.63087800488573,
+      "queue_p95_ms": 11093.220170000859,
+      "dispatch_lateness_p95_ms": 15.275067790611907,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 11223.621425007877,
+          "latency_p95_ms": 11677.52942500374
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 11294.413349997194,
+          "latency_p95_ms": 13695.260809992033
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 17,
+          "active_slot_saturation_fraction": 0.21875,
+          "mean_active": 1.890625
+        },
+        "worker-2": {
+          "max_queue": 19,
+          "active_slot_saturation_fraction": 0.15625,
+          "mean_active": 1.859375
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261028T033258-1b238b80",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 18.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 11.449449199979426,
+      "requests_s": 4.192341409758493,
+      "tokens_s": 176.07833920985672,
+      "ttft_median_ms": 1484.3865000002552,
+      "ttft_p95_ms": 5223.968924993824,
+      "latency_p95_ms": 8141.174165002301,
+      "inter_token_p95_ms": 50.895285017031696,
+      "inter_token_p99_ms": 61.22755499731282,
+      "queue_p95_ms": 5088.632044992119,
+      "dispatch_lateness_p95_ms": 14.129952771731446,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 5169.324724985927,
+          "latency_p95_ms": 5653.121150004154
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 5366.308844997547,
+          "latency_p95_ms": 8732.093080003688
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 12,
+          "active_slot_saturation_fraction": 0.6444444444444445,
+          "mean_active": 3.3333333333333335
+        },
+        "worker-2": {
+          "max_queue": 11,
+          "active_slot_saturation_fraction": 0.4888888888888889,
+          "mean_active": 2.688888888888889
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 1
+    },
+    {
+      "run_id": "20261028T033310-738b4a91",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 18.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 10.702362600015476,
+      "requests_s": 4.484991005624365,
+      "tokens_s": 188.3696222362233,
+      "ttft_median_ms": 1512.9693000053521,
+      "ttft_p95_ms": 4814.805850002449,
+      "latency_p95_ms": 7873.138655000365,
+      "inter_token_p95_ms": 49.77837999467737,
+      "inter_token_p99_ms": 58.437895991373765,
+      "queue_p95_ms": 4639.804705005372,
+      "dispatch_lateness_p95_ms": 14.958978898195957,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 4763.858174992492,
+          "latency_p95_ms": 5329.4728999899235
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 5142.297620010504,
+          "latency_p95_ms": 8127.2187500071595
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 12,
+          "active_slot_saturation_fraction": 0.6666666666666666,
+          "mean_active": 3.2857142857142856
+        },
+        "worker-2": {
+          "max_queue": 12,
+          "active_slot_saturation_fraction": 0.6190476190476191,
+          "mean_active": 3.2142857142857144
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261028T033321-bfdb54c0",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "static",
+      "execution": "selective",
+      "rate": 18.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 17.332918700005393,
+      "requests_s": 2.769297014009825,
+      "tokens_s": 116.31047458841266,
+      "ttft_median_ms": 4518.421350003337,
+      "ttft_p95_ms": 12207.703195002978,
+      "latency_p95_ms": 12704.023959989718,
+      "inter_token_p95_ms": 43.882030014356125,
+      "inter_token_p99_ms": 58.390299003513064,
+      "queue_p95_ms": 12040.978749998612,
+      "dispatch_lateness_p95_ms": 14.347762774236294,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 12163.980675002676,
+          "latency_p95_ms": 12660.837399984302
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 11146.208999997178,
+          "latency_p95_ms": 13478.087909998429
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 17,
+          "active_slot_saturation_fraction": 0.19402985074626866,
+          "mean_active": 2
+        },
+        "worker-2": {
+          "max_queue": 19,
+          "active_slot_saturation_fraction": 0.14925373134328357,
+          "mean_active": 1.4776119402985075
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 2
+    },
+    {
+      "run_id": "20261028T033339-1637b166",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "static",
+      "execution": "selective",
+      "rate": 18.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 17.254473500011954,
+      "requests_s": 2.781887259554268,
+      "tokens_s": 116.83926490127926,
+      "ttft_median_ms": 4935.1137499761535,
+      "ttft_p95_ms": 12082.25674500136,
+      "latency_p95_ms": 12547.602280021238,
+      "inter_token_p95_ms": 41.90089999901829,
+      "inter_token_p99_ms": 57.093504005461,
+      "queue_p95_ms": 11909.864005006966,
+      "dispatch_lateness_p95_ms": 15.93601501517693,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 12038.95462500077,
+          "latency_p95_ms": 12505.578600023
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 10930.96986999444,
+          "latency_p95_ms": 13373.015269996538
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 18,
+          "active_slot_saturation_fraction": 0.208955223880597,
+          "mean_active": 2.0597014925373136
+        },
+        "worker-2": {
+          "max_queue": 19,
+          "active_slot_saturation_fraction": 0.14925373134328357,
+          "mean_active": 1.373134328358209
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    },
+    {
+      "run_id": "20261028T033357-a2b0525c",
+      "scenario": "batching",
+      "backend": "simulator",
+      "worker_count": 2,
+      "routing": "least_outstanding",
+      "scheduling": "continuous",
+      "execution": "selective",
+      "rate": 18.0,
+      "chunked_prefill": true,
+      "prefill_chunk": 32,
+      "count": 48,
+      "successes": 48,
+      "elapsed_s": 11.32049700000789,
+      "requests_s": 4.2400965257944545,
+      "tokens_s": 178.08405408336708,
+      "ttft_median_ms": 1561.1272500100313,
+      "ttft_p95_ms": 5333.4173999901395,
+      "latency_p95_ms": 7987.277245002041,
+      "inter_token_p95_ms": 49.002120007935446,
+      "inter_token_p99_ms": 58.96190301282328,
+      "queue_p95_ms": 5199.6696950052865,
+      "dispatch_lateness_p95_ms": 14.777227223708511,
+      "outcomes": {
+        "completed": 48
+      },
+      "check": {
+        "passed": true,
+        "errors": [],
+        "request_count": 48,
+        "outcomes": {
+          "completed": 48
+        },
+        "all_completed": true
+      },
+      "classes": {
+        "short": {
+          "count": 36,
+          "ttft_p95_ms": 5223.827799985884,
+          "latency_p95_ms": 5678.190849997918
+        },
+        "long": {
+          "count": 12,
+          "ttft_p95_ms": 5254.718355000658,
+          "latency_p95_ms": 8498.519964993466
+        }
+      },
+      "pressure": {
+        "worker-1": {
+          "max_queue": 12,
+          "active_slot_saturation_fraction": 0.7272727272727273,
+          "mean_active": 3.4318181818181817
+        },
+        "worker-2": {
+          "max_queue": 12,
+          "active_slot_saturation_fraction": 0.5681818181818182,
+          "mean_active": 2.9318181818181817
+        }
+      },
+      "fault_detection_s": null,
+      "cache_hit_tokens": 0,
+      "admission": {
+        "clients": [
+          {
+            "client": "demo",
+            "rate": 6,
+            "burst": 12,
+            "inflight": 8,
+            "token_budget": 4096,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-a",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "client-b",
+            "rate": 2,
+            "burst": 6,
+            "inflight": 4,
+            "token_budget": 2048,
+            "active": 0,
+            "reserved_tokens": 0
+          },
+          {
+            "client": "benchmark",
+            "rate": 200,
+            "burst": 200,
+            "inflight": 128,
+            "token_budget": 100000,
+            "active": 0,
+            "reserved_tokens": 0
+          }
+        ],
+        "counts": {
+          "admitted": 48
+        }
+      },
+      "scenario_verified": true,
+      "repeat": 3
+    }
+  ],
+  "plot_convention": "Trials; heavy marks/whiskers are mean +/- sample SD. Gray lines connect routing/execution repeat pairs."
+}
