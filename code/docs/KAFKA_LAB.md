@@ -121,4 +121,4 @@ Stop the dashboard with Ctrl+C; active consumer processes are cleaned up. Stop a
 
 - [Kafka: a Distributed Messaging System for Log Processing](https://www.microsoft.com/en-us/research/wp-content/uploads/2017/09/Kafka.pdf): partitioned append-only logs, consumer progress and replay. Here the application effects live in SQLite and one local broker simplifies deployment; this does not reproduce Kafka's original cluster experiments.
 - [Apache Kafka quickstart](https://kafka.apache.org/quickstart/), [consumer configuration](https://kafka.apache.org/43/configuration/consumer-configs/), and [confluent-kafka Python client](https://docs.confluent.io/platform/current/clients/confluent-kafka-python/html/index.html).
-- [AI-use statement](../AI_USE.md). This earlier Kafka prototype is retained separately from the Topic 14 submission.
+- This earlier Kafka prototype is retained separately from the Topic 14 submission.

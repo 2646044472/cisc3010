@@ -137,7 +137,7 @@ Interpret observed queues, slot occupancy, CPU time and dispatch lateness togeth
 - [vLLM automatic prefix caching](https://docs.vllm.ai/en/stable/features/automatic_prefix_caching/): reuse saves prefill rather than directly accelerating decode.
 - [Qwen2.5-0.5B-Instruct model card](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct): default real-model provenance; downloaded model card retained beside weights. Earlier validation also used [SmolLM2](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct).
 
-This project is inspired by public mechanisms and does not claim to reproduce undisclosed OpenAI implementation details. Own contributions and AI assistance are recorded in `AI_USE.md`. Submission and publication remain separate from local implementation.
+This project is inspired by public mechanisms and does not claim to reproduce undisclosed OpenAI implementation details. The final report describes the project contributions and tool assistance.
 
 ## Presentation use
 

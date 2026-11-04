@@ -128,7 +128,7 @@ The experimental artifact provides pinned dependencies and model revision, saved
 
 Following the presentation, evaluation was extended with a twelve-trial simulator rerun, per-length analysis, and portable verification of archived routing trials. Automated checks were repeated, and raw traces were packaged with analysis code for independent inspection.
 
-**Tool disclosure.** Codex provided substantial design, implementation, testing, experiment, and writing assistance. Validation used model-reference comparisons, lifecycle checks, and repeated measurements. The accompanying `AI_USE.md` details this assistance and its verification.
+**Tool disclosure.** Codex provided substantial design, implementation, testing, experiment, and writing assistance. Validation used model-reference comparisons, lifecycle checks, and repeated measurements.
 
 ## 8  Conclusion
 

@@ -41,7 +41,7 @@ The two tested routing rates represent light and overloaded conditions; they are
 | Configuration, generators, checks, raw results and plotting scripts | [Evidence guide](../evidence/README.md), `code/llm_lab/experiment.py`, `code/llm_lab/check.py`, `code/scripts/verify_routing_evidence.py`, `code/scripts/plot_llm_results.py`, `code/scripts/build_report.py` |
 | Three-to-four-page report: question, architecture, implementation, correctness, experiments, interpretation, limitations | [Four-page PDF](../../report.pdf); references fit within the same four pages |
 | Changes following presentation and own additions | Report Section 7 identifies evaluation and verification added after the presentation and distinguishes implementation contributions from Qwen/PyTorch/Transformers. It reports actual changes without attributing them to unrecorded feedback. |
-| AI assistance and external-code attribution | [AI-use statement](../AI_USE.md), report Section 7 and references |
+| AI assistance and external-code attribution | Report Section 7 and references |
 
 The snapshot specifies **GitHub repo submission** and an explicit final deadline of **5 November**. A local ZIP is a portable copy, not evidence that the course submission has been made or that the remote repository contains the latest report. Its relative-week wording is inconsistent, so the explicit date is the planning reference.
 
